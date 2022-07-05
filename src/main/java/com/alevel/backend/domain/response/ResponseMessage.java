@@ -2,6 +2,7 @@ package com.alevel.backend.domain.response;
 
 public class ResponseMessage {
     public static final String SUCCESS = "성공";
+    public static final String FAIL = "실패";
     //public static final String SIGNUP_FAIL = "회원가입 실패";
     public static final String DUPLICATED = "중복된 값이 존재합니다.";
     public static final String NOT_DUPLICATED = "사용가능한 값입니다";

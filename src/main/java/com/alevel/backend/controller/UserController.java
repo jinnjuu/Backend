@@ -4,6 +4,7 @@ import com.alevel.backend.domain.response.DefaultResponse;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.StatusCode;
 import com.alevel.backend.domain.user.User;
+import com.alevel.backend.service.MailService;
 import com.alevel.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+
+    @Autowired
+    private MailService mailService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -40,7 +44,7 @@ public class UserController {
      * 별명 중복확인
      */
     @GetMapping(value = "/user/check/{username}")
-    public ResponseEntity<String> validateDuplicateUsername(@PathVariable("username") String username) {
+    public ResponseEntity<String> checkUsername(@PathVariable("username") String username) {
         try {
             userService.validateDuplicateUsername(username);
             return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.NOT_DUPLICATED, username), HttpStatus.OK);
@@ -53,14 +57,23 @@ public class UserController {
      * 이메일 인증
      */
     @GetMapping(value = "/user/check/email")
-    public ResponseEntity<String> validateDuplicateEmail(@Valid String email) {
+    public ResponseEntity<String> checkEmail(@Valid String email) {
         try {
             userService.validateDuplicateEmail(email);
-            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.NOT_DUPLICATED, email), HttpStatus.OK);
+            System.out.println(email + ": 가입 가능한 이메일");
         } catch (Exception e) {
             return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, email), HttpStatus.CONFLICT);
         }
-    }
 
+        int key = mailService.createKey();
+        String subject = "[한잔할래] 회원가입 인증 메일입니다.";
+        String content = "인증번호 : " + key +
+                "<br>";
+        if (mailService.sendMail(email, subject, content)) {
+            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.SUCCESS, key), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL, key), HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
