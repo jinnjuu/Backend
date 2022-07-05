@@ -30,6 +30,14 @@ public class UserController {
     }
 
     /**
+     * 로그인
+     */
+    @GetMapping(value = "/user/login")
+    public ResponseEntity login(@Valid String email, String password) {
+        return new ResponseEntity(userService.login(email, password), HttpStatus.OK);
+    }
+
+    /**
      * 회원가입
      */
     @PostMapping(value = "/user/signup")
@@ -37,7 +45,7 @@ public class UserController {
         userService.validateDuplicateUsername(username);
         userService.validateDuplicateEmail(email);
         User data = userService.signup(email, password, username);
-        return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.SUCCESS, data), HttpStatus.OK);
+        return new ResponseEntity(new DefaultResponse(data), HttpStatus.OK);
     }
 
     /**
@@ -60,7 +68,7 @@ public class UserController {
     public ResponseEntity<String> checkEmail(@Valid String email) {
         try {
             userService.validateDuplicateEmail(email);
-            System.out.println(email + ": 가입 가능한 이메일");
+            System.out.println("가입 가능한 이메일: " + email);
         } catch (Exception e) {
             return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, email), HttpStatus.CONFLICT);
         }

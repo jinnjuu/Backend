@@ -9,6 +9,12 @@ public class DefaultResponse {
     private String message;
     private Object data;
 
+    public DefaultResponse(Object data) {
+        this.status = StatusCode.OK;
+        this.message = ResponseMessage.SUCCESS;
+        this.data = data;
+    }
+
     public DefaultResponse(int status, String message) {
         this.status = status;
         this.message = message;
