@@ -33,9 +33,9 @@ public class Alchol{
 
     private String image;
 
-    private int match;
-
     private int hit; //조회수
+
+//    private int match;
 
     //와인
     @Column()
@@ -48,7 +48,8 @@ public class Alchol{
     private int acidity;
 
     @Builder
-    public Alchol(String name, String type, String category,String volume, String flavor, String size, String price, String food, String nation, String image, int match,int hit){
+    public Alchol(String name, String type, String category,String volume, String flavor, String size, String price, String food, String nation, String image, int hit,
+                  int body, int sugar, int tannis, int acidity){
         this.name=name;
         this.type=type;
         this.category=category;
@@ -60,7 +61,11 @@ public class Alchol{
         this.nation=nation;
         this.image=image;
         this.hit=hit;
-        this.match=match;
+//        this.match=match;
+        this.body=body;
+        this.sugar=sugar;
+        this.tannins=tannis;
+        this.acidity=acidity;
     }
 
 }
