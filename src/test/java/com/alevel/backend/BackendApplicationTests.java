@@ -14,4 +14,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 class BackendApplicationTests {
 
+    @Autowired
+    private RecommendRepository repo;
+
+    @Test
+    public void 반환테스트(){
+
+    }
+
 }
