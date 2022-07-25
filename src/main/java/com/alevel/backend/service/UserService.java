@@ -31,6 +31,9 @@ public class UserService {
         if (user.isEmpty()) {
             return new DefaultResponse(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER, email);
         }
+        if (user.get().getStatus()!=1) {
+            return new DefaultResponse(StatusCode.UNAUTHORIZED, ResponseMessage.NOT_FOUND_USER, email);
+        }
         if (!passwordEncoder.matches(password, user.get().getPassword())) {
             return new DefaultResponse(StatusCode.UNAUTHORIZED, ResponseMessage.LOGIN_FAIL, user);
         }
