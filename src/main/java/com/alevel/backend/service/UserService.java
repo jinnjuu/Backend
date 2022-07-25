@@ -63,4 +63,12 @@ public class UserService {
                     throw new IllegalStateException("이미 존재하는 이메일입니다.");
                 });
     }
+
+    public DefaultResponse remove(Long id) {
+        Optional<User> userWrapper = userRepository.findById(id);
+        User user = userWrapper.get();
+        user.setStatus(0);
+        userRepository.save(user);
+        return new DefaultResponse(user);
+    }
 }
