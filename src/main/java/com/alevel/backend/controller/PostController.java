@@ -16,7 +16,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/user/{id}/post")
-    public PostResponseDto findByUserId (@PathVariable Long user_id){
-        return postService.findByUserId(user_id);
+    public PostResponseDto findByUserId (@PathVariable Long userId){
+        return postService.findByUserId(userId);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class PostResponseDto {
 
-    private Long user_id;
+    private Long userId;
     private String title;
     private String content;
     private Long id;
@@ -16,7 +16,7 @@ public class PostResponseDto {
         this.id= entity.getId();
         this.content=entity.getContent();
         this.title=entity.getTitle();
-        this.user_id=entity.getUser_id();
+        this.userId=entity.getUser_id();
         this.image=entity.getImage();
     }
 }
