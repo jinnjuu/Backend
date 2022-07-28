@@ -9,10 +9,7 @@ import com.alevel.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -83,5 +80,33 @@ public class UserController {
             return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL, key), HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 별명 변경
+     */
+    @PutMapping(value = "/user/username/{id}")
+    public ResponseEntity<String> putUsername(@PathVariable("id") Long id, String username) {
+        try {
+            userService.validateDuplicateUsername(username);
+            userService.updateUsername(id, username);
+            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.SUCCESS, username), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, username), HttpStatus.CONFLICT);
+        }
+    }
+
+    /**
+     * 비밀번호 변경
+     */
+    @PutMapping(value = "/user/password/{id}")
+    public ResponseEntity<String> updatePassword(@PathVariable("id") Long id, String password, String passwordConfirm) {
+        if (!password.equals(passwordConfirm)) {
+            return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL), HttpStatus.BAD_REQUEST);
+        }
+        userService.updatePassword(id, password);
+        return new ResponseEntity(new DefaultResponse(id), HttpStatus.OK);
+    }
+
+
 
 }
