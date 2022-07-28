@@ -60,4 +60,17 @@ public class UserService {
                     throw new IllegalStateException("이미 존재하는 이메일입니다.");
                 });
     }
+
+    public User updateUsername(Long id, String username) {
+        User user = userRepository.getReferenceById(id);
+        user.setUsername(username);
+        return userRepository.save(user);
+    }
+
+    public User updatePassword(Long id, String password) {
+        User user = userRepository.getReferenceById(id);
+        encryptPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptPassword);
+        return userRepository.save(user);
+    }
 }
