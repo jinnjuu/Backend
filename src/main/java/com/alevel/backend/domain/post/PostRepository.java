@@ -1,9 +1,11 @@
 package com.alevel.backend.domain.post;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+import java.util.Optional;
 
+public interface PostRepository extends JpaRepository<Post,Long> {
+
+    Optional<Post> findByUserId(Long id);
 }
+

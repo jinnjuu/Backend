@@ -70,6 +70,7 @@ public class UserService {
         user.setStatus(0);
         userRepository.save(user);
         return new DefaultResponse(user);
+    }
 
     public User updateUsername(Long id, String username) {
         User user = userRepository.getReferenceById(id);

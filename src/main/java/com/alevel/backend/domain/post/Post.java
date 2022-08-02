@@ -1,6 +1,7 @@
 package com.alevel.backend.domain.post;
 
 import com.alevel.backend.domain.user.User;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor
+
 @DynamicInsert
 @Entity
 public class Post {
@@ -21,12 +23,15 @@ public class Post {
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
+
     private User user;
 
     @Column(length = 50, nullable = false)
     private String title;
 
+
     @Column(columnDefinition = "TEXT", nullable = false)
+
     private String content;
 
     @Column(length = 50)
@@ -73,4 +78,5 @@ public class Post {
         this.sugar = sugar;
         this.commentCount = commentCount;
     }
+
 }
