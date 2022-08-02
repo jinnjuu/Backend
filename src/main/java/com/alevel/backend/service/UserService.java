@@ -31,6 +31,9 @@ public class UserService {
         if (user.isEmpty()) {
             return new DefaultResponse(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER, email);
         }
+        if (user.get().getStatus()!=1) {
+            return new DefaultResponse(StatusCode.UNAUTHORIZED, ResponseMessage.NOT_FOUND_USER, email);
+        }
         if (!passwordEncoder.matches(password, user.get().getPassword())) {
             return new DefaultResponse(StatusCode.UNAUTHORIZED, ResponseMessage.LOGIN_FAIL, user);
         }
@@ -59,6 +62,14 @@ public class UserService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 이메일입니다.");
                 });
+    }
+
+    public DefaultResponse remove(Long id) {
+        Optional<User> userWrapper = userRepository.findById(id);
+        User user = userWrapper.get();
+        user.setStatus(0);
+        userRepository.save(user);
+        return new DefaultResponse(user);
     }
 
     public User updateUsername(Long id, String username) {
