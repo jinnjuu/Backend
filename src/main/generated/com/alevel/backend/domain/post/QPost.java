@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,13 +18,17 @@ public class QPost extends EntityPathBase<Post> {
 
     private static final long serialVersionUID = -31228900L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QPost post = new QPost("post");
 
-    public final StringPath a_nm = createString("a_nm");
+    public final StringPath alcoholName = createString("alcoholName");
 
-    public final StringPath a_type = createString("a_type");
+    public final StringPath alcoholType = createString("alcoholType");
 
     public final NumberPath<Integer> body = createNumber("body", Integer.class);
+
+    public final NumberPath<Integer> commentCount = createNumber("commentCount", Integer.class);
 
     public final StringPath content = createString("content");
 
@@ -41,20 +46,29 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath title = createString("title");
 
-    public final NumberPath<Long> user_id = createNumber("user_id", Long.class);
+    public final com.alevel.backend.domain.user.QUser user;
 
-    public final NumberPath<Integer> volume = createNumber("volume", Integer.class);
+    public final NumberPath<java.math.BigDecimal> volume = createNumber("volume", java.math.BigDecimal.class);
 
     public QPost(String variable) {
-        super(Post.class, forVariable(variable));
+        this(Post.class, forVariable(variable), INITS);
     }
 
     public QPost(Path<? extends Post> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QPost(PathMetadata metadata) {
-        super(Post.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QPost(PathMetadata metadata, PathInits inits) {
+        this(Post.class, metadata, inits);
+    }
+
+    public QPost(Class<? extends Post> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.user = inits.isInitialized("user") ? new com.alevel.backend.domain.user.QUser(forProperty("user")) : null;
     }
 
 }
