@@ -23,5 +23,6 @@ public class Review extends BaseTimeEntity {
     @ManyToOne(targetEntity = Alcohol.class)
     @JoinColumn(name = "alcohol_id")
     private Long alcoholId;
+    @Column(length = 100, nullable = false)
     private String review;
 }
