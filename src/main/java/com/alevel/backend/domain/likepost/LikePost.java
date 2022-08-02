@@ -6,15 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @DynamicInsert
 @Entity
 public class LikePost {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id")
     private Long postId;
