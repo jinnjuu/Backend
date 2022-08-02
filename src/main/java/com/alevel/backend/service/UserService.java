@@ -70,5 +70,17 @@ public class UserService {
         user.setStatus(0);
         userRepository.save(user);
         return new DefaultResponse(user);
+
+    public User updateUsername(Long id, String username) {
+        User user = userRepository.getReferenceById(id);
+        user.setUsername(username);
+        return userRepository.save(user);
+    }
+
+    public User updatePassword(Long id, String password) {
+        User user = userRepository.getReferenceById(id);
+        encryptPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptPassword);
+        return userRepository.save(user);
     }
 }

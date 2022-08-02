@@ -88,4 +88,31 @@ public class UserController {
     public ResponseEntity<String> withdrawal(Long id) {
         return new ResponseEntity(userService.remove(id), HttpStatus.OK);
     }
+
+    /**
+     * 별명 변경
+     */
+    @PutMapping(value = "/user/username/{id}")
+    public ResponseEntity<String> putUsername(@PathVariable("id") Long id, String username) {
+        try {
+            userService.validateDuplicateUsername(username);
+            userService.updateUsername(id, username);
+            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.SUCCESS, username), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, username), HttpStatus.CONFLICT);
+        }
+    }
+
+    /**
+     * 비밀번호 변경
+     */
+    @PutMapping(value = "/user/password/{id}")
+    public ResponseEntity<String> updatePassword(@PathVariable("id") Long id, String password, String passwordConfirm) {
+        if (!password.equals(passwordConfirm)) {
+            return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL), HttpStatus.BAD_REQUEST);
+        }
+        userService.updatePassword(id, password);
+        return new ResponseEntity(new DefaultResponse(id), HttpStatus.OK);
+    }
+
 }
