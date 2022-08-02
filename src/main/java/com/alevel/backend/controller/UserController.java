@@ -82,6 +82,14 @@ public class UserController {
     }
 
     /**
+     * 회원탈퇴
+     */
+    @PutMapping(value = "/user/withdrawal")
+    public ResponseEntity<String> withdrawal(Long id) {
+        return new ResponseEntity(userService.remove(id), HttpStatus.OK);
+    }
+
+    /**
      * 별명 변경
      */
     @PutMapping(value = "/user/username/{id}")
@@ -106,7 +114,5 @@ public class UserController {
         userService.updatePassword(id, password);
         return new ResponseEntity(new DefaultResponse(id), HttpStatus.OK);
     }
-
-
 
 }
