@@ -1,4 +1,4 @@
-package com.alevel.backend.domain;
+package com.alevel.backend.domain.preference;
 
 import lombok.Data;
 
@@ -21,4 +21,6 @@ public class Preference {
     private String flavor;
 
     private String price;
+
+    private String recommendation;
 }
