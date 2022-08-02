@@ -1,61 +1,82 @@
 package com.alevel.backend.domain.post;
 
 import com.alevel.backend.domain.user.User;
-import com.mysql.cj.protocol.ColumnDefinition;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor
+
+@DynamicInsert
 @Entity
 public class Post {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //fk
     @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name="user_id") //table의 column명
+    @JoinColumn(name = "user_id")
+
     private User user;
 
     @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(columnDefinition="TEXT", nullable = false)
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+
     private String content;
 
     @Column(length = 50)
     private String image;
 
-    private int hit;
+    private Long hit;
 
-    @Column(length = 20)
+    @Column(name = "alcohol_name", length = 20)
     private String alcoholName;
 
-    @Column(length = 10)
+    @Column(name = "alcohol_type", length = 10)
     private String alcoholType;
 
     @Column(length = 20)
     private String flavor;
 
-    @Column(length=20)
-    private String price;
-
-    @Column(precision = 5, scale=2)
+    @Column(precision = 5, scale = 2)
     private BigDecimal volume;
 
-    private Integer body;
+    @Column(length = 20)
+    private String price;
 
-    private Integer sugar;
+    private Long body;
 
-    @Formula("(select count(*) from comment c where c.post_id=id)")
-    private Integer commentCount;
+    private Long sugar;
 
+    @Formula("(SELECT COUNT(*) FROM comment c WHERE c.post_id = id)")
+    private int commentCount;
+
+    @Builder
+    public Post(User user, String title, String content, String image, Long hit, String alcoholName, String alcoholType,
+                String flavor, BigDecimal volume, String price, Long body, Long sugar, int commentCount) {
+        this.user = user;
+        this.title = title;
+        this.content = content;
+        this.image = image;
+        this.hit = hit;
+        this.alcoholName = alcoholName;
+        this.alcoholType = alcoholType;
+        this.flavor = flavor;
+        this.volume = volume;
+        this.price = price;
+        this.body = body;
+        this.sugar = sugar;
+        this.commentCount = commentCount;
+    }
 
 }

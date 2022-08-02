@@ -1,9 +1,9 @@
-package com.alevel.backend.domain.comment;
+package com.alevel.backend.domain.scrappost;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface ScrapPostRepository extends JpaRepository<ScrapPost, Long> {
 
 }
-
