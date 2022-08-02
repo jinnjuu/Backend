@@ -14,9 +14,9 @@ public class PostService {
 
 
     @Transactional
-    public PostResponseDto findByUserId(Long userId){
-        Post entity= postRepository.findById(userId).orElseThrow(()
-        -> new IllegalArgumentException("작성한 게시글이 없습니다. user id="+userId));
+    public PostResponseDto findByUserId(Long id){
+        Post entity= postRepository.findByUserId(id).orElseThrow(()
+        -> new IllegalArgumentException("작성한 게시글이 없습니다. id="+id));
         return new PostResponseDto(entity);
     }
 }
