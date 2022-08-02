@@ -20,6 +20,7 @@ public class LikeAlcohol {
     @ManyToOne(targetEntity = Alcohol.class)
     @JoinColumn(name = "alcohol_id")
     private Long alcoholId;
+
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private Long userId;

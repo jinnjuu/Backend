@@ -1,4 +1,4 @@
-package com.alevel.backend.domain;
+package com.alevel.backend.domain.preference;
 
 import lombok.*;
 
@@ -24,14 +24,16 @@ public class Preference {
 
     private String price;
 
+    private String recommendation;
+    
     @Builder
-    public Preference(String type, int volume, int sugar,String flavor, String price){
+    public Preference(String type, int volume, int sugar, String flavor, String price, String recommendation) {
         this.type=type;
         this.volume=volume;
         this.sugar=sugar;
         this.flavor=flavor;
         this.price=price;
+	    this.recommendation=recommendation;
     }
-
 
 }

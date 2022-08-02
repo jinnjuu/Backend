@@ -31,7 +31,6 @@ public class Post {
 
 
     @Column(columnDefinition = "TEXT", nullable = false)
-
     private String content;
 
     @Column(length = 50)
