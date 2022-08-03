@@ -26,9 +26,9 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.alevel.backend.domain.post.QPost postId;
+    public final com.alevel.backend.domain.post.QPost post;
 
-    public final com.alevel.backend.domain.user.QUser userId;
+    public final com.alevel.backend.domain.user.QUser user;
 
     public QComment(String variable) {
         this(Comment.class, forVariable(variable), INITS);
@@ -48,8 +48,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.postId = inits.isInitialized("postId") ? new com.alevel.backend.domain.post.QPost(forProperty("postId"), inits.get("postId")) : null;
-        this.userId = inits.isInitialized("userId") ? new com.alevel.backend.domain.user.QUser(forProperty("userId")) : null;
+        this.post = inits.isInitialized("post") ? new com.alevel.backend.domain.post.QPost(forProperty("post"), inits.get("post")) : null;
+        this.user = inits.isInitialized("user") ? new com.alevel.backend.domain.user.QUser(forProperty("user")) : null;
     }
 
 }
