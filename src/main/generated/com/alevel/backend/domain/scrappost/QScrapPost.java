@@ -24,9 +24,11 @@ public class QScrapPost extends EntityPathBase<ScrapPost> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.alevel.backend.domain.post.QPost postId;
+    public final NumberPath<Integer> myScrapPostCount = createNumber("myScrapPostCount", Integer.class);
 
-    public final com.alevel.backend.domain.user.QUser userId;
+    public final com.alevel.backend.domain.post.QPost post;
+
+    public final com.alevel.backend.domain.user.QUser user;
 
     public QScrapPost(String variable) {
         this(ScrapPost.class, forVariable(variable), INITS);
@@ -46,8 +48,8 @@ public class QScrapPost extends EntityPathBase<ScrapPost> {
 
     public QScrapPost(Class<? extends ScrapPost> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.postId = inits.isInitialized("postId") ? new com.alevel.backend.domain.post.QPost(forProperty("postId"), inits.get("postId")) : null;
-        this.userId = inits.isInitialized("userId") ? new com.alevel.backend.domain.user.QUser(forProperty("userId")) : null;
+        this.post = inits.isInitialized("post") ? new com.alevel.backend.domain.post.QPost(forProperty("post"), inits.get("post")) : null;
+        this.user = inits.isInitialized("user") ? new com.alevel.backend.domain.user.QUser(forProperty("user")) : null;
     }
 
 }

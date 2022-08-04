@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ScrapPostRepository extends JpaRepository<ScrapPost, Long> {
 
+//       ScrapPost findByScrapPostId(Long postId);
 }

@@ -22,11 +22,13 @@ public class QScrapAlcohol extends EntityPathBase<ScrapAlcohol> {
 
     public static final QScrapAlcohol scrapAlcohol = new QScrapAlcohol("scrapAlcohol");
 
-    public final com.alevel.backend.domain.alcohol.QAlcohol alcoholId;
+    public final com.alevel.backend.domain.alcohol.QAlcohol alcohol;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.alevel.backend.domain.user.QUser userId;
+    public final NumberPath<Integer> myScrapAlcoholCount = createNumber("myScrapAlcoholCount", Integer.class);
+
+    public final com.alevel.backend.domain.user.QUser user;
 
     public QScrapAlcohol(String variable) {
         this(ScrapAlcohol.class, forVariable(variable), INITS);
@@ -46,8 +48,8 @@ public class QScrapAlcohol extends EntityPathBase<ScrapAlcohol> {
 
     public QScrapAlcohol(Class<? extends ScrapAlcohol> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.alcoholId = inits.isInitialized("alcoholId") ? new com.alevel.backend.domain.alcohol.QAlcohol(forProperty("alcoholId")) : null;
-        this.userId = inits.isInitialized("userId") ? new com.alevel.backend.domain.user.QUser(forProperty("userId")) : null;
+        this.alcohol = inits.isInitialized("alcohol") ? new com.alevel.backend.domain.alcohol.QAlcohol(forProperty("alcohol")) : null;
+        this.user = inits.isInitialized("user") ? new com.alevel.backend.domain.user.QUser(forProperty("user")) : null;
     }
 
 }
