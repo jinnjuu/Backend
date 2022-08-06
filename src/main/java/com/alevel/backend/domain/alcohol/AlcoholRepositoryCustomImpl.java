@@ -28,8 +28,8 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
     @Override
     public Page<Alcohol> findAllAlcohol(String type, String category, Pageable pageable) {
 
-        JPAQuery<Alcohol> query = queryFactory.
-                selectFrom(alcohol)
+        JPAQuery<Alcohol> query = queryFactory
+                .selectFrom(alcohol)
                 .where(eqType(type),
                         eqCategory(category))
                 .offset(pageable.getOffset()) // 페이지 번호
@@ -42,13 +42,15 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
         }
 
         List<Alcohol> content = query.fetch();
-        long total = content.size();
 
-        return new PageImpl<>(content, pageable, total);
+        long totalCount = queryFactory.select(alcohol.count())
+                .from(alcohol)
+                .where(eqType(type),
+                        eqCategory(category))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, totalCount);
     }
-    //            order by hit desc; -- 조회순
-    //            order by volume asc; -- 낮은 도수 순
-    //            order by price asc; -- 낮은 가격 순"
 
     private BooleanExpression eqType(String type) {
         return StringUtils.isEmpty(type) ? null : alcohol.type.eq(type);
