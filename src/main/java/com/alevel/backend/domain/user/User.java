@@ -2,6 +2,7 @@ package com.alevel.backend.domain.user;
 
 import com.alevel.backend.domain.BaseTimeEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class User extends BaseTimeEntity {
 
     @Id
