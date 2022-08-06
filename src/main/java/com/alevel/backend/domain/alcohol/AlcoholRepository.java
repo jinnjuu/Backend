@@ -8,10 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AlcoholRepository extends JpaRepository<Alcohol, Long> {
+public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, AlcoholRepositoryCustom {
 
-    @Query(value =
-            "select t.id " +
+    @Query(value = "select t.id " +
                     "from ( " +
                         "select * from Alcohol a where a.type in :typeArray " +
                         "union all " +
@@ -32,4 +31,5 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long> {
                                   @Param("sugar") Integer sugar,
                                   @Param("flavor") String flavor,
                                   @Param("minPrice") Integer minPrice, @Param("maxPrice") Integer maxPrice);
+
 }
