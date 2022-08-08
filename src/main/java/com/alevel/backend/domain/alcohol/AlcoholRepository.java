@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, AlcoholRepositoryCustom {
@@ -32,4 +33,6 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, Alcohol
                                   @Param("flavor") String flavor,
                                   @Param("minPrice") Integer minPrice, @Param("maxPrice") Integer maxPrice);
 
+    @Query(value = "select a from Alcohol a where a.id = :id")
+    Alcohol findAlcoholById(@Param("id") Long id);
 }

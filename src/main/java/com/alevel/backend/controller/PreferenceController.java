@@ -40,7 +40,7 @@ public class PreferenceController {
     @GetMapping(value = "/recommendations/alcohol")
     public ResponseEntity recommendAlcohol(Long userid, String type) {
         try {
-            return new ResponseEntity(preferenceService.findRecommendationAlcohol(userid, type), HttpStatus.OK);
+            return new ResponseEntity(new DefaultResponse(preferenceService.findRecommendationAlcohol(userid, type)), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL), HttpStatus.BAD_REQUEST);
         }

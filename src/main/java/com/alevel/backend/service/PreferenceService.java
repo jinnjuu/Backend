@@ -1,6 +1,7 @@
 package com.alevel.backend.service;
 
 import com.alevel.backend.controller.dto.RecommendAlcoholDto;
+import com.alevel.backend.domain.alcohol.Alcohol;
 import com.alevel.backend.domain.alcohol.AlcoholRepository;
 import com.alevel.backend.domain.preference.Preference;
 import com.alevel.backend.domain.preference.PreferenceRepository;
@@ -47,8 +48,11 @@ public class PreferenceService {
         String[] IdArray = recommendation.replaceAll(" ","").split(",");
 
         for (int i = 0; i < IdArray.length; i++) {
-            RecommendAlcoholDto alcohol = alcoholRepository.findNameAndImageByUseridAndType(Long.parseLong(IdArray[i]), type);
-            result.add(alcohol);
+            Alcohol alcohol = alcoholRepository.findAlcoholById(Long.parseLong(IdArray[i]));
+
+            if (type.equals("") || alcohol.getType().equals(type)) {
+                result.add(new RecommendAlcoholDto(alcohol));
+            }
         }
         return result;
     }
