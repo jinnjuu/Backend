@@ -2,8 +2,10 @@ package com.alevel.backend.domain.preference;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,7 +14,8 @@ import javax.persistence.Id;
 public class Preference {
 
     @Id
-    private Long user_id;
+    @Column(name = "user_id")
+    private Long userid;
 
     private String type;
 
@@ -27,7 +30,7 @@ public class Preference {
     private String recommendation;
     
     @Builder
-    public Preference(String type, int volume, int sugar, String flavor, String price, String recommendation) {
+    public Preference(Long user_id, String type, int volume, int sugar, String flavor, String price, String recommendation) {
         this.type=type;
         this.volume=volume;
         this.sugar=sugar;

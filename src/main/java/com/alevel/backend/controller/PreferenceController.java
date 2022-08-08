@@ -24,13 +24,26 @@ public class PreferenceController {
      * 술 취향 등록
      */
     @PostMapping(value = "/user/prefer")
-    public ResponseEntity savePreference(@RequestBody Preference preference, String type) {
+    public ResponseEntity savePreference(@RequestBody Preference preference) {
         try {
-            String recommendation = preferenceService.getRecommendation(preference, type);
+            String recommendation = preferenceService.getRecommendationId(preference);
             preference.setRecommendation(recommendation);
             return new ResponseEntity(preferenceService.insert(preference), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL, preference), HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 술 추천
+     */
+    @GetMapping(value = "/recommendations/alcohol")
+    public ResponseEntity recommendAlcohol(Long userid, String type) {
+        try {
+            return new ResponseEntity(preferenceService.findRecommendationAlcohol(userid, type), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

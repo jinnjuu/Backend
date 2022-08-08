@@ -1,5 +1,6 @@
 package com.alevel.backend.domain.alcohol;
 
+import com.alevel.backend.controller.dto.RecommendAlcoholDto;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -50,6 +51,16 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, totalCount);
+    }
+
+    public RecommendAlcoholDto findNameAndImageByUseridAndType(Long id, String type) {
+        Alcohol query = queryFactory
+                .selectFrom(alcohol)
+                .where(alcohol.id.eq(id),
+                        eqType(type))
+                .fetchOne();
+
+        return new RecommendAlcoholDto(query);
     }
 
     private BooleanExpression eqType(String type) {
