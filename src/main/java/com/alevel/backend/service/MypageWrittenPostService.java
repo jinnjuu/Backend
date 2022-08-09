@@ -7,16 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
-public class PostService {
+public class MypageWrittenPostService {
     private final PostRepository postRepository;
 
 
     @Transactional
-    public PostResponseDto findByUserId(Long id){
-        Post entity= postRepository.findByUserId(id).orElseThrow(()
-        -> new IllegalArgumentException("작성한 게시글이 없습니다. id="+id));
-        return new PostResponseDto(entity);
+    public List<PostResponseDto> findByUserId(Long id){
+        List<Post> entity= postRepository.findByUserId(id);
+        return entity.stream().map(PostResponseDto::new).collect(Collectors.toList());
     }
 }
