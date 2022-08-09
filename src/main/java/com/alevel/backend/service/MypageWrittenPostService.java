@@ -1,6 +1,6 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.PostResponseDto;
+import com.alevel.backend.controller.dto.MypageWrittenPostResponseDto;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class MypageWrittenPostService {
 
 
     @Transactional
-    public List<PostResponseDto> findByUserId(Long id){
+    public List<MypageWrittenPostResponseDto> findByUserId(Long id){
         List<Post> entity= postRepository.findByUserId(id);
-        return entity.stream().map(PostResponseDto::new).collect(Collectors.toList());
+        return entity.stream().map(MypageWrittenPostResponseDto::new).collect(Collectors.toList());
     }
 }

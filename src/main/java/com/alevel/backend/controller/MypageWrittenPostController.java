@@ -1,6 +1,6 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.controller.dto.PostResponseDto;
+import com.alevel.backend.controller.dto.MypageWrittenPostResponseDto;
 import com.alevel.backend.service.MypageWrittenPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class MypageWrittenPostController {
     private final MypageWrittenPostService mypageWrittenPostService;
 
     @GetMapping("/users/{user-id}/posts")
-    public List<PostResponseDto> findByUserId (@PathVariable Long id){
+    public List<MypageWrittenPostResponseDto> findByUserId (@PathVariable Long id){
         return mypageWrittenPostService.findByUserId(id);
     }
 }
