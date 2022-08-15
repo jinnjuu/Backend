@@ -1,5 +1,6 @@
 package com.alevel.backend.service;
 
+import com.alevel.backend.controller.dto.MypageAccountResponseDto;
 import com.alevel.backend.domain.response.DefaultResponse;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.StatusCode;
@@ -83,5 +84,11 @@ public class UserService {
         encryptPassword = passwordEncoder.encode(password);
         user.setPassword(encryptPassword);
         return userRepository.save(user);
+    }
+
+    public MypageAccountResponseDto getAccount(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        User entity = user.get();
+        return new MypageAccountResponseDto(entity);
     }
 }

@@ -115,4 +115,12 @@ public class UserController {
         return new ResponseEntity(new DefaultResponse(id), HttpStatus.OK);
     }
 
+    /**
+     * 내 계정 조회
+     */
+    @GetMapping(value = "/users/mypage/{id}")
+    public ResponseEntity<String> getMypageAccount(@PathVariable("id") Long id) {
+        return new ResponseEntity(new DefaultResponse(userService.getAccount(id)), HttpStatus.OK);
+    }
+
 }
