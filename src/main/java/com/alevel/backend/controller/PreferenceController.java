@@ -20,11 +20,6 @@ public class PreferenceController {
         this.preferenceService = preferenceService;
     }
 
-//    @PostMapping(value = "/user/prefer")
-//    public ResponseEntity savePrefer(@RequestBody Preference preference) {
-//        return new ResponseEntity(preferenceService.insert(preference), HttpStatus.OK);
-//    }
-
     /**
      * 술 취향 등록
      */
