@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MypageCommentController {
     private final MypageCommentService mypageCommentService;
 
-    @GetMapping("/user/{id}/comment")
+    @GetMapping("/users/{id}/comment")
     public MypageCommentResponseDto findByUserId(@PathVariable Long id){
         return mypageCommentService.findByUserId(id);
     }
