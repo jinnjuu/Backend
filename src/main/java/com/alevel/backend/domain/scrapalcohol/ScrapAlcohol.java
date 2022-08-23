@@ -26,7 +26,5 @@ public class ScrapAlcohol {
     @JoinColumn(name = "alcohol_id")
     private Alcohol alcohol;
 
-    @Formula("(SELECT  COUNT(*) FROM scrap_alcohol sa WHERE sa.user_id=user_id)")
-    private Integer myScrapAlcoholCount;
 
 }

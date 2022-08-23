@@ -61,8 +61,8 @@ public class Post {
     private int commentCount;
 
     //내가 쓴 글 개수
-    @Formula("(SELECT COUNT(*) FROM post p WHERE p.user_id=user_id)")
-    private int MyPostCount;
+//    @Formula("(SELECT COUNT(*) FROM post p WHERE p.user_id=user_id)")
+//    private int myPostCount;
 
     @Builder
     public Post(User user, String title, String content, String image, Long hit, String alcoholName, String alcoholType,
