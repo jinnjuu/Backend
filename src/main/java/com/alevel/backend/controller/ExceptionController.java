@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.LimitExceededException;
+
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -51,5 +53,12 @@ public class ExceptionController {
         log.info(e.getMessage());
         e.printStackTrace();
         return ResultResponse.fail(StatusCode.CONFLICT, ResponseMessage.DUPLICATED_EMAIL);
+    }
+
+    @ExceptionHandler(ExceededNumberException.class)
+    private ResultResponse ExceededNumberException(ExceededNumberException e) {
+        log.info(e.getMessage());
+        e.printStackTrace();
+        return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.EXCEEDED_NUMBER);
     }
 }
