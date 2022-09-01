@@ -24,8 +24,6 @@ public class QScrapPost extends EntityPathBase<ScrapPost> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> myScrapPostCount = createNumber("myScrapPostCount", Integer.class);
-
     public final com.alevel.backend.domain.post.QPost post;
 
     public final com.alevel.backend.domain.user.QUser user;

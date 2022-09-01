@@ -40,8 +40,6 @@ public class QPost extends EntityPathBase<Post> {
 
     public final StringPath image = createString("image");
 
-    public final NumberPath<Integer> MyPostCount = createNumber("MyPostCount", Integer.class);
-
     public final StringPath price = createString("price");
 
     public final NumberPath<Long> sugar = createNumber("sugar", Long.class);

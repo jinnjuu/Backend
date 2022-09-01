@@ -26,8 +26,6 @@ public class QScrapAlcohol extends EntityPathBase<ScrapAlcohol> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> myScrapAlcoholCount = createNumber("myScrapAlcoholCount", Integer.class);
-
     public final com.alevel.backend.domain.user.QUser user;
 
     public QScrapAlcohol(String variable) {

@@ -26,8 +26,6 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> myCommentCount = createNumber("myCommentCount", Integer.class);
-
     public final com.alevel.backend.domain.post.QPost post;
 
     public final com.alevel.backend.domain.user.QUser user;
