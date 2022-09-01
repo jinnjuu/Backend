@@ -1,14 +1,11 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.domain.response.DefaultResponse;
 import com.alevel.backend.domain.response.ResponseMessage;
+import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
-import com.alevel.backend.domain.user.User;
 import com.alevel.backend.service.MailService;
 import com.alevel.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,45 +26,42 @@ public class UserController {
     /**
      * 로그인
      */
-    @GetMapping(value = "/user/login")
-    public ResponseEntity login(@Valid String email, String password) {
-        return new ResponseEntity(userService.login(email, password), HttpStatus.OK);
+    @GetMapping(value = "/users/login")
+    public ResultResponse login(@Valid String email, String password) {
+        userService.login(email, password);
+        return ResultResponse.success();
     }
 
     /**
      * 회원가입
      */
-    @PostMapping(value = "/user/signup")
-    public ResponseEntity signup(String email, String password, String username) {
-        userService.validateDuplicateUsername(username);
+    @PostMapping(value = "/users/signup")
+    public ResultResponse signup(String email, String password, String username) {
         userService.validateDuplicateEmail(email);
-        User data = userService.signup(email, password, username);
-        return new ResponseEntity(new DefaultResponse(data), HttpStatus.OK);
+        userService.validateDuplicateUsername(username);
+        userService.signup(email, password, username);
+        return ResultResponse.success();
     }
 
     /**
      * 별명 중복확인
      */
-    @GetMapping(value = "/user/check/{username}")
-    public ResponseEntity<String> checkUsername(@PathVariable("username") String username) {
-        try {
-            userService.validateDuplicateUsername(username);
-            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.NOT_DUPLICATED, username), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, username), HttpStatus.CONFLICT);
-        }
+    @GetMapping(value = "/users/check/{username}")
+    public ResultResponse checkUsername(@PathVariable("username") String username) {
+        userService.validateDuplicateUsername(username);
+        return ResultResponse.success();
     }
 
     /**
      * 이메일 인증
      */
-    @GetMapping(value = "/user/check/email")
-    public ResponseEntity<String> checkEmail(@Valid String email) {
+    @GetMapping(value = "/users/check/email")
+    public ResultResponse checkEmail(@Valid String email) {
         try {
             userService.validateDuplicateEmail(email);
             System.out.println("가입 가능한 이메일: " + email);
         } catch (Exception e) {
-            return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, email), HttpStatus.CONFLICT);
+            return ResultResponse.fail(StatusCode.CONFLICT, ResponseMessage.DUPLICATED_EMAIL);
         }
 
         int key = mailService.createKey();
@@ -75,44 +69,49 @@ public class UserController {
         String content = "인증번호 : " + key +
                 "<br>";
         if (mailService.sendMail(email, subject, content)) {
-            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.SUCCESS, key), HttpStatus.OK);
+            return ResultResponse.success();
         } else {
-            return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL, key), HttpStatus.BAD_REQUEST);
+            return ResultResponse.fail(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * 회원탈퇴
      */
-    @PutMapping(value = "/user/withdrawal")
-    public ResponseEntity<String> withdrawal(Long id) {
-        return new ResponseEntity(userService.remove(id), HttpStatus.OK);
+    @PutMapping(value = "/users/withdrawal")
+    public ResultResponse withdrawal(Long id) {
+        userService.remove(id);
+        return ResultResponse.success();
     }
 
     /**
      * 별명 변경
      */
-    @PutMapping(value = "/user/username/{id}")
-    public ResponseEntity<String> putUsername(@PathVariable("id") Long id, String username) {
-        try {
-            userService.validateDuplicateUsername(username);
-            userService.updateUsername(id, username);
-            return new ResponseEntity(new DefaultResponse(StatusCode.OK, ResponseMessage.SUCCESS, username), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(new DefaultResponse(StatusCode.CONFLICT, ResponseMessage.DUPLICATED, username), HttpStatus.CONFLICT);
-        }
+    @PutMapping(value = "/users/username/{id}")
+    public ResultResponse putUsername(@PathVariable("id") Long id, String username) {
+        userService.validateDuplicateUsername(username);
+        userService.updateUsername(id, username);
+        return ResultResponse.success();
     }
 
     /**
      * 비밀번호 변경
      */
-    @PutMapping(value = "/user/password/{id}")
-    public ResponseEntity<String> updatePassword(@PathVariable("id") Long id, String password, String passwordConfirm) {
+    @PutMapping(value = "/users/password/{id}")
+    public ResultResponse updatePassword(@PathVariable("id") Long id, String password, String passwordConfirm) {
         if (!password.equals(passwordConfirm)) {
-            return new ResponseEntity(new DefaultResponse(StatusCode.BAD_REQUEST, ResponseMessage.FAIL), HttpStatus.BAD_REQUEST);
+            return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.INVALIDATED_PASSWORD);
         }
         userService.updatePassword(id, password);
-        return new ResponseEntity(new DefaultResponse(id), HttpStatus.OK);
+        return ResultResponse.success();
+    }
+
+    /**
+     * 내 계정 조회
+     */
+    @GetMapping(value = "/users/mypage/{id}")
+    public ResultResponse getMypageAccount(@PathVariable("id") Long id) {
+        return ResultResponse.success(userService.getAccount(id));
     }
 
 }
