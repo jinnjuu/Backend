@@ -65,9 +65,23 @@ jobs:
     
      - name: Display structure of downloaded files
        run: ls -R
-         
-     - name: Print the final result
-       shell: bash
-       run: |
-         value=`cat my-artifact/backend-0.0.1-SNAPSHOT.jar`
-         echo The result is $value
+
+     - uses: actions/checkout@master
+     - name: copy file via ssh
+       uses: appleboy/scp-action@master
+       with:
+         host: ${{ secrets.HOST }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
+         port: ${{ secrets.PORT }}
+         source: "my-artifact/backend-0.0.1-SNAPSHOT.jar"
+         target: "~/Backend/"
+
+     - name: executing springboot via remote ssh commands
+       uses: appleboy/ssh-action@master
+       with:
+         host: ${{ secrets.HOST }}
+         username: ${{ secrets.USERNAME }}
+         password: ${{ secrets.PASSWORD }}
+         port: ${{ secrets.PORT }}
+         script: java –jar ~/Backend/backend-0.0.1-SNAPSHOT.jar &
