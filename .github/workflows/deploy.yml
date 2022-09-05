@@ -32,14 +32,14 @@ jobs:
     # sed -i "s/\${http.port}/$HTTP_PORT/g" server.xml
     - name: Make application.properties
       run: |
-      	cd ./src/main/resources
-	sed -i "s\/$DATASOURCE_URL/${{ secrets.DATASOURCE_URL }}/g" > ./application.properties
-	sed -i "s\/$DATASOURCE_USERNAME/${{ secrets.DATASOURCE_USERNAME }}/g" > ./application.properties
-	sed -i "s\/$DATASOURCE_PASSWORD/${{ secrets.DATASOURCE_PASSWORD }}/g" > ./application.properties
-	sed -i "s\/$MAIL_USERNAME/${{ secrets.MAIL_USERNAME }}/g" > ./application.properties
-	sed -i "s\/$MAIL_PASSWORD/${{ secrets.MAIL_PASSWORD }}/g" > ./application.properties
-	cat ./application.properties
-	shell: bash
+        cd ./src/main/resources
+        sed -i "s\/$DATASOURCE_URL/${{ secrets.DATASOURCE_URL }}/g" > ./application.properties
+        sed -i "s\/$DATASOURCE_USERNAME/${{ secrets.DATASOURCE_USERNAME }}/g" > ./application.properties
+        sed -i "s\/$DATASOURCE_PASSWORD/${{ secrets.DATASOURCE_PASSWORD }}/g" > ./application.properties
+        sed -i "s\/$MAIL_USERNAME/${{ secrets.MAIL_USERNAME }}/g" > ./application.properties
+        sed -i "s\/$MAIL_PASSWORD/${{ secrets.MAIL_PASSWORD }}/g" > ./application.properties
+        cat ./application.properties
+        shell: bash
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
