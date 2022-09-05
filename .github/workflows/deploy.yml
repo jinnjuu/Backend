@@ -63,10 +63,10 @@ jobs:
          name: my-artifact
     
      - name: Display structure of downloaded files
-         run: ls -R
+       run: ls -R
          
      - name: Print the final result
-         shell: bash
-         run: |
-           value=`cat homework/math-homework.txt`
-           echo The result is $value
+       shell: bash
+       run: |
+         value=`cat my-artifact/backend-0.0.1-SNAPSHOT.jar`
+         echo The result is $value
