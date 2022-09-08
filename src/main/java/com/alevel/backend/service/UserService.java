@@ -1,10 +1,9 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.domain.response.DefaultResponse;
-import com.alevel.backend.domain.response.ResponseMessage;
-import com.alevel.backend.domain.response.StatusCode;
+import com.alevel.backend.controller.dto.MypageAccountResponseDto;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
+import com.alevel.backend.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,18 +25,15 @@ public class UserService {
 
     String encryptPassword;
 
-    public DefaultResponse login(String email, String password) {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isEmpty()) {
-            return new DefaultResponse(StatusCode.NOT_FOUND, ResponseMessage.NOT_FOUND_USER, email);
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
+        if (user.getStatus() != 1) {
+            throw new WithdrawnUserException();
         }
-        if (user.get().getStatus()!=1) {
-            return new DefaultResponse(StatusCode.UNAUTHORIZED, ResponseMessage.NOT_FOUND_USER, email);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new InvalidatePasswordException();
         }
-        if (!passwordEncoder.matches(password, user.get().getPassword())) {
-            return new DefaultResponse(StatusCode.UNAUTHORIZED, ResponseMessage.LOGIN_FAIL, user);
-        }
-        return new DefaultResponse(user);
+        return user;
     }
 
     public User signup(String email, String password, String username) {
@@ -53,23 +49,22 @@ public class UserService {
     public void validateDuplicateUsername(String username) {
         userRepository.findByUsername(username)
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new DuplicatedUserException();
                 });
     }
 
     public void validateDuplicateEmail(String email) {
         userRepository.findByEmail(email)
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 이메일입니다.");
+                    throw new DuplicatedEmailException();
                 });
     }
 
-    public DefaultResponse remove(Long id) {
+    public User remove(Long id) {
         Optional<User> userWrapper = userRepository.findById(id);
         User user = userWrapper.get();
         user.setStatus(0);
-        userRepository.save(user);
-        return new DefaultResponse(user);
+        return userRepository.save(user);
     }
 
     public User updateUsername(Long id, String username) {
@@ -83,5 +78,11 @@ public class UserService {
         encryptPassword = passwordEncoder.encode(password);
         user.setPassword(encryptPassword);
         return userRepository.save(user);
+    }
+
+    public MypageAccountResponseDto getAccount(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        User entity = user.get();
+        return new MypageAccountResponseDto(entity);
     }
 }

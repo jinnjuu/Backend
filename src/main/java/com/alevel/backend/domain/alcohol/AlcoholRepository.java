@@ -6,12 +6,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface AlcoholRepository extends JpaRepository<Alcohol, Long> {
+public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, AlcoholRepositoryCustom {
 
-    @Query(value =
-            "select t.id " +
+    @Query(value = "select t.id " +
                     "from ( " +
                         "select * from Alcohol a where a.type in :typeArray " +
                         "union all " +
@@ -32,4 +32,7 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long> {
                                   @Param("sugar") Integer sugar,
                                   @Param("flavor") String flavor,
                                   @Param("minPrice") Integer minPrice, @Param("maxPrice") Integer maxPrice);
+
+    @Query(value = "select a from Alcohol a where a.id = :id")
+    Alcohol findAlcoholById(@Param("id") Long id);
 }
