@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -26,6 +27,9 @@ public class ScrapAlcohol {
     @ManyToOne(targetEntity = Alcohol.class)
     @JoinColumn(name = "alcohol_id")
     private Alcohol alcohol;
+
+    @Formula("(SELECT  COUNT(*) FROM scrap_alcohol sa WHERE sa.user_id=user_id)")
+    private Integer myScrapAlcoholCount;
 
     @Builder
     public ScrapAlcohol(User user, Alcohol alcohol) {

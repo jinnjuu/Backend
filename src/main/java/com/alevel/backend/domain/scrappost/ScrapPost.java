@@ -5,6 +5,7 @@ import com.alevel.backend.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -19,8 +20,12 @@ public class ScrapPost {
 
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id")
-    private Long postId;
+    private Post post;
+
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
-    private Long userId;
+    private User user;
+
+    @Formula("(SELECT (*) FROM scrap_post sp WHERE sp.user_id=user_id)")
+    private Integer myScrapPostCount;
 }

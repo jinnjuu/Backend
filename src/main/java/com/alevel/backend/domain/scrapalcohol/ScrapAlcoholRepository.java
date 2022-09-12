@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface ScrapAlcoholRepository extends JpaRepository<ScrapAlcohol, Long> {
 
+    Optional<ScrapAlcohol> findByUserId(Long id);
+
     void delete(ScrapAlcohol scrapAlcohol);
 
     Optional<ScrapAlcohol> findByUserAndAlcohol(User user, Alcohol alcohol);
