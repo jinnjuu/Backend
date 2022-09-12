@@ -23,6 +23,7 @@ public class Post {
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
+
     private User user;
 
     @Column(length = 50, nullable = false)
@@ -56,13 +57,8 @@ public class Post {
 
     private Long sugar;
 
-    //post당 댓글 수
     @Formula("(SELECT COUNT(*) FROM comment c WHERE c.post_id = id)")
     private int commentCount;
-
-    //내가 쓴 글 개수
-//    @Formula("(SELECT COUNT(*) FROM post p WHERE p.user_id=user_id)")
-//    private int myPostCount;
 
     @Builder
     public Post(User user, String title, String content, String image, Long hit, String alcoholName, String alcoholType,

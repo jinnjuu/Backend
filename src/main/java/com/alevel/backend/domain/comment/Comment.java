@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -30,7 +29,6 @@ public class Comment extends BaseTimeEntity {
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
 
 //    @Builder
 //    public Comment(User user, Post post,String content){

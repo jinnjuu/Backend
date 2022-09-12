@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -28,6 +27,10 @@ public class ScrapAlcohol {
     @JoinColumn(name = "alcohol_id")
     private Alcohol alcohol;
 
-
+    @Builder
+    public ScrapAlcohol(User user, Alcohol alcohol) {
+        this.user = user;
+        this.alcohol = alcohol;
+    }
 
 }
