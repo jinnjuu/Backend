@@ -31,9 +31,6 @@ public class Comment extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Formula("(SELECT COUNT(*)FROM comment c WHERE c.user_id=user_id)")
-    private int myCommentCount;
-
 //    @Builder
 //    public Comment(User user, Post post,String content){
 //        this.user=user;

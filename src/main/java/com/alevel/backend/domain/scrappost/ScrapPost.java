@@ -26,6 +26,4 @@ public class ScrapPost {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Formula("(SELECT (*) FROM scrap_post sp WHERE sp.user_id=user_id)")
-    private Integer myScrapPostCount;
 }
