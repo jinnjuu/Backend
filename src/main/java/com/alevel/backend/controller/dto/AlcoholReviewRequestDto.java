@@ -1,17 +1,20 @@
 package com.alevel.backend.controller.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-public class SaveAlcoholReviewDto {
+@Setter
+@NoArgsConstructor
+public class AlcoholReviewRequestDto {
 
-    private Long alcoholid;
     private Long userid;
     private String content;
 
-    public SaveAlcoholReviewDto(Long alcoholid, Long userid, String content) {
-        this.alcoholid = alcoholid;
+    public AlcoholReviewRequestDto(Long userid, String content) {
         this.userid = userid;
         this.content = content;
     }
+
 }

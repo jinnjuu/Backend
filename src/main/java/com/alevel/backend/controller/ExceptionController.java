@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.naming.LimitExceededException;
-
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -40,6 +38,13 @@ public class ExceptionController {
         return ResultResponse.fail(StatusCode.UNAUTHORIZED, ResponseMessage.INVALIDATED_PASSWORD);
     }
 
+    @ExceptionHandler(InvalidateReviewException.class)
+    private ResultResponse InvalidateReviewException(InvalidateReviewException e) {
+        log.info(e.getMessage());
+        e.printStackTrace();
+        return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_REVIEW);
+    }
+
     @ExceptionHandler(DuplicatedUserException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     private ResultResponse DuplicatedUserException(DuplicatedUserException e) {
@@ -61,4 +66,5 @@ public class ExceptionController {
         e.printStackTrace();
         return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.EXCEEDED_NUMBER);
     }
+
 }

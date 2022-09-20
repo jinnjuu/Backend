@@ -5,6 +5,7 @@ public class ResponseMessage {
     public static final String FAIL = "실패";
     public static final String INVALIDATED_USER = "해당 사용자가 존재하지 않습니다";
     public static final String INVALIDATED_POST = "해당 피드가 존재하지 않습니다";
+    public static final String INVALIDATED_REVIEW = "리뷰가 존재하지 않습니다";
     public static final String INVALIDATED_ALCOHOL = "해당 술이 존재하지 않습니다";
     public static final String WITHDRAWN_USER = "탈퇴한 사용자입니다";
     public static final String INVALIDATED_PASSWORD = "패스워드가 일치하지 않습니다";
