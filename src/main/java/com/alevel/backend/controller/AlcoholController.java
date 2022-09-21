@@ -38,6 +38,7 @@ public class AlcoholController {
         }
     }
 
+
     /**
      *
      * 술 스크랩
@@ -47,4 +48,5 @@ public class AlcoholController {
         alcoholService.scrapAlcohol(userid, alcoholid);
         return ResultResponse.success();
     }
+
 }
