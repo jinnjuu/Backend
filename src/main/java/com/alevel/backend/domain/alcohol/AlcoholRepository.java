@@ -35,4 +35,8 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, Alcohol
 
     @Query(value = "select a from Alcohol a where a.id = :id")
     Alcohol findAlcoholById(@Param("id") Long id);
+
+
+    //search
+    List<Alcohol> findByNameContaining(String keyword);
 }
