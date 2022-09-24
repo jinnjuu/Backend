@@ -41,15 +41,12 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build -x test
-        
-    - name: Tar files
-      run: tar -cvf deployfile.tar build/libs/backend-0.0.1-SNAPSHOT.jar .github/workflows/deploy.sh
       
     - name: Upload artifact for build
       uses: actions/upload-artifact@v3
       with:
         name: artifact
-        path: deployfile.tar
+        path: build/libs/backend-0.0.1-SNAPSHOT.jar
 
   deploy:
     needs: build
@@ -73,8 +70,7 @@ jobs:
          username: ${{ secrets.USERNAME }}
          password: ${{ secrets.PASSWORD }}
          port: ${{ secrets.PORT }}
-         #source: "backend-0.0.1-SNAPSHOT.jar"
-         source: "deployfile.tar"
+         source: "backend-0.0.1-SNAPSHOT.jar, .github/workflows/deploy.sh"
          target: "~/test/"
 
      - name: executing springboot via remote ssh commands
@@ -85,5 +81,5 @@ jobs:
          password: ${{ secrets.PASSWORD }}
          port: ${{ secrets.PORT }}
          script: |
-           tar -xvf deployfile.tar
-           deploy.sh
+           cd ~/test
+           sh deploy.sh
