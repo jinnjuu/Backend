@@ -12,7 +12,7 @@ fi
 
 sleep 3
 
-cd ~/test
+cd ~/alevel
 JAR_NAME=$(ls | grep backend)
 echo "JAR_NAME: $JAR_NAME"
 

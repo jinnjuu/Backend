@@ -1,4 +1,4 @@
-name: Deploy to Amazon EC2
+name: Deploy
 
 on:
   push:
@@ -22,12 +22,16 @@ jobs:
     - name: create application.properties
       run: echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.properties
 
+    - name: Clean with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: clean
+
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: build -x test
     
-
     - name: copy jar file via ssh
       uses: appleboy/scp-action@master
       with:
@@ -37,7 +41,7 @@ jobs:
         port: ${{ secrets.PORT }}
         rm: true
         source: "build/libs/backend-0.0.1-SNAPSHOT.jar"
-        target: "~/test/"
+        target: "~/alevel/"
         strip_components: 2
 
     - name: copy script file via ssh
@@ -48,7 +52,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: "deploy.sh"
-        target: "~/test/"
+        target: "~/alevel/"
 
     - name: executing springboot via remote ssh commands
       uses: appleboy/ssh-action@master
@@ -58,7 +62,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          cd ~/test
+          cd ~/alevel
           ls -al
           chmod +x deploy.sh
           sh deploy.sh
