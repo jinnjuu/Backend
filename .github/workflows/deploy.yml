@@ -51,8 +51,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         rm: true
-        #source: "build/libs/backend-0.0.1-SNAPSHOT.jar, deploy.sh"
-        source: "."
+        source: "build/libs/backend-0.0.1-SNAPSHOT.jar, deploy.sh"
         target: "~/test/"
         strip_components: 1
 
