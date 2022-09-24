@@ -73,7 +73,7 @@ jobs:
          rm: true
          #source: "backend-0.0.1-SNAPSHOT.jar, build.gradle, deploy.sh"
          #source: "backend-0.0.1-SNAPSHOT.jar"
-         source: "*"
+         source: "./*"
          target: "~/test/"
          strip_components: 1
 
