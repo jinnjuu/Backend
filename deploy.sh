@@ -10,7 +10,7 @@ else
         echo "실행중인 프로세스가 없습니다."
 fi
 
-sleep 5
+sleep 3
 
 cd ~/test
 JAR_NAME=$(ls | grep backend)
