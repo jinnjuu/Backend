@@ -23,7 +23,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: create application.properties
-      run: ${{ secrets.PROPERTIES }} > /src/main/resources/application.properties
+      run: echo ${{ secrets.PROPERTIES }} > /src/main/resources/application.properties
       
     # sed -i "s/\${http.port}/$HTTP_PORT/g" server.xml
 #     - name: Make application.properties
