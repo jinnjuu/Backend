@@ -61,7 +61,7 @@ jobs:
           cd ~/test
           ls -al
           chmod +x deploy.sh
-          #sh deploy.sh
+          sh deploy.sh
           
 #     - name: Upload artifact for build
 #       uses: actions/upload-artifact@v3
