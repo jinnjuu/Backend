@@ -53,7 +53,6 @@ jobs:
         rm: true
         source: "build/libs/backend-0.0.1-SNAPSHOT.jar, deploy.sh"
         target: "~/test/"
-        strip_components: 1
 
     - name: executing springboot via remote ssh commands
       uses: appleboy/ssh-action@master
