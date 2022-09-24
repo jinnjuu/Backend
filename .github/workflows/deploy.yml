@@ -70,7 +70,7 @@ jobs:
          username: ${{ secrets.USERNAME }}
          password: ${{ secrets.PASSWORD }}
          port: ${{ secrets.PORT }}
-         source: "backend-0.0.1-SNAPSHOT.jar, .github/workflows/deploy.sh"
+         source: "backend-0.0.1-SNAPSHOT.jar, build.gradle, .github/workflows/deploy.sh"
          target: "~/test/"
 
      - name: executing springboot via remote ssh commands
@@ -82,4 +82,5 @@ jobs:
          port: ${{ secrets.PORT }}
          script: |
            cd ~/test
-           sh deploy.sh
+           ls -al
+           #sh deploy.sh
