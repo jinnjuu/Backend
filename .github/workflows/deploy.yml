@@ -70,10 +70,10 @@ jobs:
          username: ${{ secrets.USERNAME }}
          password: ${{ secrets.PASSWORD }}
          port: ${{ secrets.PORT }}
-         #source: "backend-0.0.1-SNAPSHOT.jar, build.gradle, .github/workflows/deploy.sh"
-         source: "backend-0.0.1-SNAPSHOT.jar, build.gradle"
-         target: "~/test/"
          rm: true
+         #source: "backend-0.0.1-SNAPSHOT.jar, build.gradle, .github/workflows/deploy.sh"
+         source: "backend-0.0.1-SNAPSHOT.jar,build.gradle"
+         target: "~/test/"
 
      - name: executing springboot via remote ssh commands
        uses: appleboy/ssh-action@master
