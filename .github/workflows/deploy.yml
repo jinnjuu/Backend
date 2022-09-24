@@ -46,11 +46,11 @@ jobs:
       with:
         arguments: build -x test
         
-    - name: Upload artifact for build
-      uses: actions/upload-artifact@v3
-      with:
-        name: my-artifact
-        path: build/libs/backend-0.0.1-SNAPSHOT.jar
+#     - name: Upload artifact for build
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: my-artifact
+#         path: build/libs/backend-0.0.1-SNAPSHOT.jar
 
   deploy:
     needs: build
@@ -58,13 +58,13 @@ jobs:
     steps:
      - uses: actions/checkout@v2
 
-     - name: Download artifact for build
-       uses: actions/download-artifact@v3
-       with:
-         name: my-artifact
+#      - name: Download artifact for build
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: my-artifact
     
-     - name: Display structure of downloaded files
-       run: ls -R
+#      - name: Display structure of downloaded files
+#        run: ls -R
 
      - uses: actions/checkout@master
      - name: copy file via ssh
@@ -74,8 +74,9 @@ jobs:
          username: ${{ secrets.USERNAME }}
          password: ${{ secrets.PASSWORD }}
          port: ${{ secrets.PORT }}
-         source: "my-artifact/backend-0.0.1-SNAPSHOT.jar"
-         target: "~/Backend/"
+         #source: "my-artifact/backend-0.0.1-SNAPSHOT.jar"
+         source: "build/libs/backend-0.0.1-SNAPSHOT.jar"
+         target: "~/test/"
 
      - name: executing springboot via remote ssh commands
        uses: appleboy/ssh-action@master
@@ -84,4 +85,7 @@ jobs:
          username: ${{ secrets.USERNAME }}
          password: ${{ secrets.PASSWORD }}
          port: ${{ secrets.PORT }}
-         script: java –jar ~/Backend/backend-0.0.1-SNAPSHOT.jar &
+         script: |
+          whoami > whoami.txt
+          cat whoami.txt
+         #java –jar ~/test/backend-0.0.1-SNAPSHOT.jar &
