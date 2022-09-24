@@ -4,9 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-# permissions:
-#   contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,18 +21,6 @@ jobs:
 
     - name: create application.properties
       run: echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.properties
-      
-    # sed -i "s/\${http.port}/$HTTP_PORT/g" server.xml
-#     - name: Make application.properties
-#       run: |
-#         cd ./src/main/resources
-#         sed -i "s/$DATASOURCE_URL/${{ secrets.DATASOURCE_URL }}/g" > ./application.properties
-#         sed -i "s/$DATASOURCE_USERNAME/${{ secrets.DATASOURCE_USERNAME }}/g" > ./application.properties
-#         sed -i "s/$DATASOURCE_PASSWORD/${{ secrets.DATASOURCE_PASSWORD }}/g" > ./application.properties
-#         sed -i "s/$MAIL_USERNAME/${{ secrets.MAIL_USERNAME }}/g" > ./application.properties
-#         sed -i "s/$MAIL_PASSWORD/${{ secrets.MAIL_PASSWORD }}/g" > ./application.properties
-#         cat ./application.properties
-#         shell: bash
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
@@ -43,7 +28,7 @@ jobs:
         arguments: build -x test
     
 
-    - name: copy file via ssh
+    - name: copy jar file via ssh
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -51,7 +36,19 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         rm: true
-        source: "build/libs/backend-0.0.1-SNAPSHOT.jar, deploy.sh"
+        source: "build/libs/backend-0.0.1-SNAPSHOT.jar"
+        target: "~/test/"
+        strip_components: 2
+
+    - name: copy script file via ssh
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        rm: true
+        source: "deploy.sh"
         target: "~/test/"
 
     - name: executing springboot via remote ssh commands
@@ -66,7 +63,7 @@ jobs:
           ls -al
           chmod +x deploy.sh
           #sh deploy.sh
-      
+          
 #     - name: Upload artifact for build
 #       uses: actions/upload-artifact@v3
 #       with:
