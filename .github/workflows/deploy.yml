@@ -60,7 +60,7 @@ jobs:
          name: artifact
     
      - name: Display structure of downloaded files
-       run: ls -R
+       run: pwd && ls -R
 
      - uses: actions/checkout@master
      - name: copy file via ssh
