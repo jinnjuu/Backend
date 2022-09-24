@@ -60,7 +60,7 @@ jobs:
          name: artifact
     
      - name: Display structure of downloaded files
-       run: ls -al
+       run: ls -R
 
      - uses: actions/checkout@master
      - name: copy file via ssh
@@ -72,7 +72,7 @@ jobs:
          port: ${{ secrets.PORT }}
          rm: true
          #source: "backend-0.0.1-SNAPSHOT.jar, build.gradle, .github/workflows/deploy.sh"
-         source: "gradlew"
+         source: "backend-0.0.1-SNAPSHOT.jar"
          target: "~/test/"
          strip_components: 1
 
