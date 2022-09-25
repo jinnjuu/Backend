@@ -29,7 +29,8 @@ public class ReviewController {
     }
 
     /**
-     * 한 줄 리뷰 조회 - 테스트
+     * 한 줄 리뷰 조회
+     * 사용: AlcoholController.getAlcoholDetailPage
      */
     @GetMapping(value = "/alcohols/{id}/review")
     public ResultResponse getReview(@PathVariable("id") Long id){

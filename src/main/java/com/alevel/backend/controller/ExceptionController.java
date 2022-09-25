@@ -38,6 +38,13 @@ public class ExceptionController {
         return ResultResponse.fail(StatusCode.UNAUTHORIZED, ResponseMessage.INVALIDATED_PASSWORD);
     }
 
+    @ExceptionHandler(InvalidatePostException.class)
+    private ResultResponse InvalidatePostException(InvalidatePostException e) {
+        log.info(e.getMessage());
+        e.printStackTrace();
+        return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);
+    }
+
     @ExceptionHandler(InvalidateReviewException.class)
     private ResultResponse InvalidateReviewException(InvalidateReviewException e) {
         log.info(e.getMessage());

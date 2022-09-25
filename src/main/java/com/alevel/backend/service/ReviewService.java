@@ -9,7 +9,6 @@ import com.alevel.backend.domain.review.ReviewRepository;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
 import com.alevel.backend.exception.ExceededNumberException;
-import com.alevel.backend.exception.InvalidateReviewException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,8 @@ public class ReviewService {
         List<Review> review = reviewRepository.findAllByAlcohol(alcohol);
 
         if (review.isEmpty()) {
-            throw new InvalidateReviewException();
+            //throw new InvalidateReviewException();
+            return null;
         }
 
         List<AlcoholReviewResponseDto> dto = new ArrayList();;

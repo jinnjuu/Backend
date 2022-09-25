@@ -28,7 +28,6 @@ public class Post {
     @Column(length = 50, nullable = false)
     private String title;
 
-
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
@@ -63,6 +62,12 @@ public class Post {
     //내가 쓴 글 개수
 //    @Formula("(SELECT COUNT(*) FROM post p WHERE p.user_id=user_id)")
 //    private int myPostCount;
+
+    @Formula("(SELECT COUNT(*) FROM scrap_post c WHERE c.post_id = id)")
+    private int scrapCount;
+
+    @Formula("(SELECT COUNT(*) FROM like_post c WHERE c.post_id = id)")
+    private int likeCount;
 
     @Builder
     public Post(User user, String title, String content, String image, Long hit, String alcoholName, String alcoholType,
