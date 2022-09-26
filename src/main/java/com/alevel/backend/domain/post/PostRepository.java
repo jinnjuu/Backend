@@ -15,5 +15,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     Integer myPostCount(Long id);
 
     List<Post> findByAlcoholNameContaining(String name);
+
+    List<Post> findAll();
 }
 

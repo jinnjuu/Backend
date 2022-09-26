@@ -3,7 +3,6 @@ package com.alevel.backend.controller;
 import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.controller.dto.AlcoholReviewResponseDto;
 import com.alevel.backend.controller.dto.PostResponseDto;
-import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
@@ -29,11 +28,11 @@ import java.util.Map;
 public class AlcoholController {
 
     @Autowired
-    private AlcoholService alcoholService;
+    private final AlcoholService alcoholService;
     @Autowired
-    private ReviewService reviewService;
-    private PostService postService;
-    private PreferenceService preferenceService;
+    private final ReviewService reviewService;
+    private final PostService postService;
+    private final PreferenceService preferenceService;
 
     @Autowired
     public AlcoholController(AlcoholService alcoholService, ReviewService reviewService, PostService postService, PreferenceService preferenceService) {
@@ -62,7 +61,7 @@ public class AlcoholController {
 
     /**
      *
-     * 술 상세 페이지 조회 - 술 상세정보, 한줄리뷰, 게시글, 추천게시글
+     * 술 상세 페이지 - 술 상세정보, 한줄리뷰, 게시글, 추천게시글
      */
     @GetMapping(value = "/alcohols/{id}")
     public ResultResponse getAlcoholDetailPage(@PathVariable("id") Long id, Long userid) {
@@ -72,7 +71,7 @@ public class AlcoholController {
             List<PostResponseDto> post = postService.findByAlcoholName(alcohol.getName());
             List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(userid);
 
-            Map<String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<>();
             data.put("alcohol", alcohol);
             data.put("review", review);
             data.put("post", post);

@@ -5,6 +5,7 @@ import com.alevel.backend.controller.dto.PostResponseDto;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,16 +33,48 @@ public class PostService {
             return null;
         }
 
-        List<PostResponseDto> dto = new ArrayList();;
+        List<PostResponseDto> dto = new ArrayList();
 
-        for (int i=0; i<post.size(); i++) {
-            Long id = post.get(i).getId();
-            String title = post.get(i).getTitle();
-            String content = post.get(i).getContent();
-            String image = post.get(i).getImage();
-            Integer commentCount = post.get(i).getCommentCount();
-            Integer scrapCount = post.get(i).getScrapCount();
-            Integer likeCount = post.get(i).getLikeCount();
+        for (Post value : post) {
+            Long id = value.getId();
+            String title = value.getTitle();
+            String content = value.getContent();
+            String image = value.getImage();
+            Integer commentCount = value.getCommentCount();
+            Integer scrapCount = value.getScrapCount();
+            Integer likeCount = value.getLikeCount();
+
+            dto.add(new PostResponseDto(id, title, content, image, commentCount, scrapCount, likeCount));
+        }
+
+        return dto;
+    }
+
+    public List<PostResponseDto> findRecommendationTopPost(){
+
+        Sort sort = Sort.by(
+                Sort.Order.desc("hit"),
+                Sort.Order.desc("likeCount"),
+                Sort.Order.desc("scrapCount")
+        );
+
+        List<Post> post = postRepository.findAll(sort);
+
+        if (post.isEmpty()) {
+            //throw new InvalidatePostException();
+            return null;
+        }
+
+        List<PostResponseDto> dto = new ArrayList();
+
+        for (Post value : post) {
+            Long id = value.getId();
+            String title = value.getTitle();
+            String content = value.getContent();
+            String image = value.getImage();
+            Integer commentCount = value.getCommentCount();
+            Integer scrapCount = value.getScrapCount();
+            Integer likeCount = value.getLikeCount();
 
             dto.add(new PostResponseDto(id, title, content, image, commentCount, scrapCount, likeCount));
         }
