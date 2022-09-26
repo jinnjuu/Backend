@@ -5,7 +5,7 @@ on:
     branches: [ "main", "develop" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -19,8 +19,8 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: create application.properties
-      run: echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.properties
+    - name: Create application.properties
+      run: mkdir -p src/main/resources && echo "${{ secrets.PROPERTIES }}" > src/main/resources/application.properties
 
     - name: Clean with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
