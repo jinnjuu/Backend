@@ -1,7 +1,9 @@
 package com.alevel.backend.domain.alcohol;
 
+import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -26,10 +28,12 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
     QAlcohol alcohol = QAlcohol.alcohol;
 
     @Override
-    public Page<Alcohol> findAllAlcohol(String type, String category, Pageable pageable) {
+    public Page<AlcoholResponseDto> findAllAlcohol(String type, String category, Pageable pageable) {
 
-        JPAQuery<Alcohol> query = queryFactory
-                .selectFrom(alcohol)
+        JPAQuery<AlcoholResponseDto> query = queryFactory
+                .select(Projections.constructor(AlcoholResponseDto.class,
+                        alcohol.name, alcohol.volume, alcohol.size, alcohol.price, alcohol.image))
+                .from(alcohol)
                 .where(eqType(type),
                         eqCategory(category))
                 .offset(pageable.getOffset()) // 페이지 번호
@@ -41,7 +45,7 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
                     pathBuilder.get(o.getProperty())));
         }
 
-        List<Alcohol> content = query.fetch();
+        List<AlcoholResponseDto> content = query.fetch();
 
         long totalCount = queryFactory.select(alcohol.count())
                 .from(alcohol)

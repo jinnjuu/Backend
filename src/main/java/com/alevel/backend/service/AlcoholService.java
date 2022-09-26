@@ -1,5 +1,6 @@
 package com.alevel.backend.service;
 
+import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.domain.alcohol.Alcohol;
 import com.alevel.backend.domain.alcohol.AlcoholRepository;
 import com.alevel.backend.domain.scrapalcohol.ScrapAlcohol;
@@ -28,7 +29,7 @@ public class AlcoholService {
 
     private JPAQueryFactory queryFactory;
 
-    public Page<Alcohol> findAllAlcohol(String type, String category, Pageable pageable) {
+    public Page<AlcoholResponseDto> findAllAlcohol(String type, String category, Pageable pageable) {
         return alcoholRepository.findAllAlcohol(type, category, pageable);
     }
 
