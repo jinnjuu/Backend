@@ -29,7 +29,7 @@ public class AlcoholService {
 
     private JPAQueryFactory queryFactory;
 
-    public Page<Alcohol> findAllAlcohol(String type, String category, Pageable pageable) {
+    public Page<AlcoholResponseDto> findAllAlcohol(String type, String category, Pageable pageable) {
         return alcoholRepository.findAllAlcohol(type, category, pageable);
     }
 

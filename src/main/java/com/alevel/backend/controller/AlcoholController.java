@@ -3,6 +3,7 @@ package com.alevel.backend.controller;
 import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.controller.dto.AlcoholReviewResponseDto;
 import com.alevel.backend.controller.dto.PostResponseDto;
+import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
@@ -11,6 +12,7 @@ import com.alevel.backend.service.PostService;
 import com.alevel.backend.service.PreferenceService;
 import com.alevel.backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -49,7 +51,9 @@ public class AlcoholController {
             String type, String category,
             @PageableDefault(size = 6, sort = "hit", direction = Sort.Direction.DESC) Pageable pageable) {
         try {
-            return ResultResponse.success(alcoholService.findAllAlcohol(type, category, pageable));
+            Page<AlcoholResponseDto> alcohol = alcoholService.findAllAlcohol(type, category, pageable);
+            System.out.println("alcohol:" + alcohol);
+            return ResultResponse.success(alcohol.getContent());
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.FAIL);
         }
