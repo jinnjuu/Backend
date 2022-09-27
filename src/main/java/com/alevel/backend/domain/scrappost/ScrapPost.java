@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @DynamicInsert
+@Table(name = "scrap_post")
 @Entity
 public class ScrapPost {
     @Id

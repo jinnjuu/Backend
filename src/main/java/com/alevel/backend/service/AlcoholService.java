@@ -33,6 +33,12 @@ public class AlcoholService {
         return alcoholRepository.findAllAlcohol(type, category, pageable);
     }
 
+    public AlcoholResponseDto findAlcoholDetail(Long id) {
+        Alcohol alcohol = alcoholRepository.findAlcoholById(id);
+        return new AlcoholResponseDto(
+                alcohol.getName(), alcohol.getVolume(), alcohol.getSize(), alcohol.getPrice(), alcohol.getImage());
+    }
+
     public void scrapAlcohol(Long userId, Long alcoholId) {
         User user = userRepository.getReferenceById(userId);
         Alcohol alcohol = alcoholRepository.getReferenceById(alcoholId);

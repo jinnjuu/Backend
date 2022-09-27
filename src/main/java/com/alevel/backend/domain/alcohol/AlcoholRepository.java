@@ -6,22 +6,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, AlcoholRepositoryCustom {
 
     @Query(value = "select t.id " +
                     "from ( " +
-                        "select * from Alcohol a where a.type in :typeArray " +
+                        "select * from alcohol a where a.type in :typeArray " +
                         "union all " +
-                        "select * from Alcohol a where a.volume = :volume " +
+                        "select * from alcohol a where a.volume = :volume " +
                         "union all " +
-                        "select * from Alcohol a where a.sugar = :sugar " +
+                        "select * from alcohol a where a.sugar = :sugar " +
                         "union all " +
-                        "select * from Alcohol a where a.flavor like concat('%', :flavor, '%') " +
+                        "select * from alcohol a where a.flavor like concat('%', :flavor, '%') " +
                         "union all " +
-                        "select * from Alcohol a where a.price >= :minPrice and a.price <= :maxPrice " +
+                        "select * from alcohol a where a.price >= :minPrice and a.price <= :maxPrice " +
                     ") t " +
                     "group by t.id " +
                     "order by count(*) desc "
@@ -35,7 +34,6 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, Alcohol
 
     @Query(value = "select a from Alcohol a where a.id = :id")
     Alcohol findAlcoholById(@Param("id") Long id);
-
 
     //search
     List<Alcohol> findByNameContaining(String keyword);

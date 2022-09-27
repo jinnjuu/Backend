@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @DynamicInsert
+@Table(name = "like_post")
 @Entity
 public class LikePost {
     @Id
@@ -19,8 +20,9 @@ public class LikePost {
 
     @ManyToOne(targetEntity = Post.class)
     @JoinColumn(name = "post_id")
-    private Long postId;
+    private Post post;
+
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
-    private Long userId;
+    private User user;
 }

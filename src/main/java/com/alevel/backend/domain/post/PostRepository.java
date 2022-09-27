@@ -3,7 +3,9 @@ package com.alevel.backend.domain.post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
+
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
@@ -12,5 +14,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query(value = "SELECT COUNT(*) FROM post p WHERE p.user_id=user_id", nativeQuery = true)
     Integer myPostCount(Long id);
 
+    List<Post> findByAlcoholNameContaining(String name);
+
+    List<Post> findAll();
 }
 
