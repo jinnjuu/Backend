@@ -1,5 +1,6 @@
 package com.alevel.backend.controller;
 
+import com.alevel.backend.controller.dto.AlcoholDetailResponseDto;
 import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.controller.dto.AlcoholReviewResponseDto;
 import com.alevel.backend.controller.dto.PostResponseDto;
@@ -66,7 +67,7 @@ public class AlcoholController {
     @GetMapping(value = "/alcohols/{id}")
     public ResultResponse getAlcoholDetailPage(@PathVariable("id") Long id, Long userid) {
         try {
-            AlcoholResponseDto alcohol = alcoholService.findAlcoholDetail(id);
+            AlcoholDetailResponseDto alcohol = alcoholService.findAlcoholDetail(id);
             List<AlcoholReviewResponseDto> review = reviewService.getReview(id);
             List<PostResponseDto> post = postService.findByAlcoholName(alcohol.getName());
             List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(userid);
@@ -91,7 +92,7 @@ public class AlcoholController {
     @GetMapping(value = "/alcohols/{id}/detail")
     public ResultResponse getAlcoholDetail(@PathVariable("id") Long id) {
         try {
-            AlcoholResponseDto alcohol = alcoholService.findAlcoholDetail(id);
+            AlcoholDetailResponseDto alcohol = alcoholService.findAlcoholDetail(id);
             return ResultResponse.success(alcohol);
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.FAIL);

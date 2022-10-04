@@ -1,5 +1,6 @@
 package com.alevel.backend.service;
 
+import com.alevel.backend.controller.dto.AlcoholDetailResponseDto;
 import com.alevel.backend.controller.dto.AlcoholResponseDto;
 import com.alevel.backend.domain.alcohol.Alcohol;
 import com.alevel.backend.domain.alcohol.AlcoholRepository;
@@ -33,10 +34,9 @@ public class AlcoholService {
         return alcoholRepository.findAllAlcohol(type, category, pageable);
     }
 
-    public AlcoholResponseDto findAlcoholDetail(Long id) {
+    public AlcoholDetailResponseDto findAlcoholDetail(Long id) {
         Alcohol alcohol = alcoholRepository.findAlcoholById(id);
-        return new AlcoholResponseDto(
-                alcohol.getName(), alcohol.getVolume(), alcohol.getSize(), alcohol.getPrice(), alcohol.getImage());
+        return new AlcoholDetailResponseDto(alcohol);
     }
 
     public void scrapAlcohol(Long userId, Long alcoholId) {
