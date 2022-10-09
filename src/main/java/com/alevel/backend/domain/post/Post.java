@@ -1,5 +1,6 @@
 package com.alevel.backend.domain.post;
 
+import com.alevel.backend.domain.BaseTimeEntity;
 import com.alevel.backend.domain.user.User;
 
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 
 @DynamicInsert
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
