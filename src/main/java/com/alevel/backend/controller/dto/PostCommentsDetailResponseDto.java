@@ -5,9 +5,10 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-public class PostDetailResponseDto {
+public class PostCommentsDetailResponseDto {
 
     private Long id;
     private String username;
@@ -25,8 +26,9 @@ public class PostDetailResponseDto {
     private Long body;
     private Long sugar;
     private LocalDateTime modifiedDate;
+    private List<CommentResponseDto> comments;
 
-    public PostDetailResponseDto(Post post){
+    public PostCommentsDetailResponseDto(Post post, List<CommentResponseDto> dto){
         this.id = post.getId();
         this.username = post.getUser().getUsername();
         this.title = post.getTitle();
@@ -44,6 +46,8 @@ public class PostDetailResponseDto {
         this.price = post.getPrice();
         this.body = post.getBody();
         this.sugar = post.getSugar();
+
+        this.comments = dto;
     }
 
 }
