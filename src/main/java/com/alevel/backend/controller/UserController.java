@@ -3,6 +3,7 @@ package com.alevel.backend.controller;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
+import com.alevel.backend.domain.user.User;
 import com.alevel.backend.service.MailService;
 import com.alevel.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class UserController {
      */
     @GetMapping(value = "/users/login")
     public ResultResponse login(@Valid String email, String password) {
-        userService.login(email, password);
-        return ResultResponse.success();
+        User user = userService.login(email, password);
+        return ResultResponse.success(user.getId());
     }
 
     /**
@@ -39,8 +40,8 @@ public class UserController {
     public ResultResponse signup(String email, String password, String username) {
         userService.validateDuplicateEmail(email);
         userService.validateDuplicateUsername(username);
-        userService.signup(email, password, username);
-        return ResultResponse.success();
+        User user = userService.signup(email, password, username);
+        return ResultResponse.success(user.getId());
     }
 
     /**
