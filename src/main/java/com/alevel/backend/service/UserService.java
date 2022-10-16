@@ -42,8 +42,7 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(encryptPassword);
         user.setUsername(username);
-        userRepository.save(user);
-        return user;
+        return userRepository.save(user);
     }
 
     public void validateDuplicateUsername(String username) {
