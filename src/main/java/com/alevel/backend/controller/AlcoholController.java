@@ -52,8 +52,10 @@ public class AlcoholController {
             @PageableDefault(size = 6, sort = "hit", direction = Sort.Direction.DESC) Pageable pageable) {
         try {
             Page<AlcoholResponseDto> alcohol = alcoholService.findAllAlcohol(type, category, pageable);
-            System.out.println("alcohol:" + alcohol);
-            return ResultResponse.success(alcohol.getContent());
+            Map<String, Object> data = new HashMap<>();
+            data.put("alcohol", alcohol.getContent());
+            data.put("total", alcohol.getTotalElements());
+            return ResultResponse.success(data);
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.FAIL);
         }
