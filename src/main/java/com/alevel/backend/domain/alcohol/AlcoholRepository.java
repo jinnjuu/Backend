@@ -12,8 +12,6 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, Alcohol
 
     @Query(value = "select t.id " +
                     "from ( " +
-                        "select * from alcohol a where a.type in :typeArray " +
-                        "union all " +
                         "select * from alcohol a where a.volume = :volume " +
                         "union all " +
                         "select * from alcohol a where a.sugar = :sugar " +
@@ -22,6 +20,7 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, Alcohol
                         "union all " +
                         "select * from alcohol a where a.price >= :minPrice and a.price <= :maxPrice " +
                     ") t " +
+                    "where t.type in :typeArray " +
                     "group by t.id " +
                     "order by count(*) desc "
             , nativeQuery = true
