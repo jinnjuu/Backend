@@ -4,6 +4,7 @@ import com.alevel.backend.domain.BaseTimeEntity;
 import com.alevel.backend.domain.user.User;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 
 @DynamicInsert
 @Entity
+@Data
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +57,9 @@ public class Post extends BaseTimeEntity {
     private Long body;
 
     private Long sugar;
+
+    @Column(columnDefinition = "TINYINT", length = 1)
+    private boolean status = true;
 
     //post당 댓글 수
     @Formula("(SELECT COUNT(*) FROM comment c WHERE c.post_id = id)")

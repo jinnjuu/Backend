@@ -1,5 +1,7 @@
 package com.alevel.backend.domain.post;
 
+import com.alevel.backend.controller.dto.PostDetailResponseDto;
+import com.alevel.backend.controller.dto.PostResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,8 +18,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<Post> findByAlcoholNameContaining(String name);
 
-    List<Post> findAll();
+    Optional<Post> findByIdAndStatusTrue(Long id);
 
-    Optional<Post> findById(Long id);
+    List<Post> findByStatusTrue();
 }
 

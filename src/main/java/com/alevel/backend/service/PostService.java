@@ -1,9 +1,6 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.CommentResponseDto;
-import com.alevel.backend.controller.dto.MyPagePostResponseDto;
-import com.alevel.backend.controller.dto.PostDetailResponseDto;
-import com.alevel.backend.controller.dto.PostResponseDto;
+import com.alevel.backend.controller.dto.*;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
 import com.alevel.backend.exception.InvalidatePostException;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -84,12 +82,25 @@ public class PostService {
         return dto;
     }
 
-    public PostDetailResponseDto findPostAndCommentsById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(
+    public PostCommentsDetailResponseDto findPostAndCommentsById(Long id) {
+        Post post = postRepository.findByIdAndStatusTrue(id).orElseThrow(
                 () -> new InvalidatePostException()
         );
         List<CommentResponseDto> comments = commentService.findCommentseByPost(post);
-        return new PostDetailResponseDto(post, comments);
+        return new PostCommentsDetailResponseDto(post, comments);
+    }
+
+    public List<PostDetailResponseDto> findPosts() {
+        return postRepository.findByStatusTrue()
+                .stream().map(PostDetailResponseDto::new).collect(Collectors.toList());
+    }
+
+    public Long deletePostById(Long id) {
+        Post post = postRepository.findByIdAndStatusTrue(id).orElseThrow(
+                () -> new InvalidatePostException()
+        );
+        post.setStatus(false);
+        return postRepository.save(post).getId();
     }
 
 }
