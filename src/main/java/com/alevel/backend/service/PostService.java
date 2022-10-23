@@ -1,22 +1,24 @@
 package com.alevel.backend.service;
 
+import com.alevel.backend.controller.dto.CommentResponseDto;
 import com.alevel.backend.controller.dto.MyPagePostResponseDto;
+import com.alevel.backend.controller.dto.PostDetailResponseDto;
 import com.alevel.backend.controller.dto.PostResponseDto;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
+import com.alevel.backend.exception.InvalidatePostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class PostService {
     private final PostRepository postRepository;
-
+    private final CommentService commentService;
 
     @Transactional
     public MyPagePostResponseDto findByUserId(Long id){
@@ -81,4 +83,13 @@ public class PostService {
 
         return dto;
     }
+
+    public PostDetailResponseDto findPostAndCommentsById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new InvalidatePostException()
+        );
+        List<CommentResponseDto> comments = commentService.findCommentseByPost(post);
+        return new PostDetailResponseDto(post, comments);
+    }
+
 }
