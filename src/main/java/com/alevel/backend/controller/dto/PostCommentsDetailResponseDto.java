@@ -26,9 +26,11 @@ public class PostCommentsDetailResponseDto {
     private Long body;
     private Long sugar;
     private LocalDateTime modifiedDate;
+    private Boolean like;
+    private Boolean scrap;
     private List<CommentResponseDto> comments;
 
-    public PostCommentsDetailResponseDto(Post post, List<CommentResponseDto> dto){
+    public PostCommentsDetailResponseDto(Post post, Boolean like, Boolean scrap, List<CommentResponseDto> dto){
         this.id = post.getId();
         this.username = post.getUser().getUsername();
         this.title = post.getTitle();
@@ -46,6 +48,9 @@ public class PostCommentsDetailResponseDto {
         this.price = post.getPrice();
         this.body = post.getBody();
         this.sugar = post.getSugar();
+
+        this.like = like;
+        this.scrap = scrap;
 
         this.comments = dto;
     }
