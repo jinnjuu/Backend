@@ -32,7 +32,7 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
 
         JPAQuery<AlcoholResponseDto> query = queryFactory
                 .select(Projections.constructor(AlcoholResponseDto.class,
-                        alcohol.name, alcohol.volume, alcohol.size, alcohol.price, alcohol.image))
+                        alcohol.id, alcohol.name, alcohol.volume, alcohol.size, alcohol.price, alcohol.image))
                 .from(alcohol)
                 .where(eqType(type),
                         eqCategory(category))

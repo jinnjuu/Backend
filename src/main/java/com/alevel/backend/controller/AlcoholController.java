@@ -64,18 +64,20 @@ public class AlcoholController {
 
     /**
      *
-     * 술 상세 페이지 - 술 상세정보, 한줄리뷰, 게시글, 추천게시글
+     * 술 상세 페이지 - 술 상세정보, 술 스크랩여부, 한줄리뷰, 게시글, 추천게시글
      */
     @GetMapping(value = "/alcohols/{id}")
     public ResultResponse getAlcoholDetailPage(@PathVariable("id") Long id, Long userid) {
         try {
             AlcoholDetailResponseDto alcohol = alcoholService.findAlcoholDetail(id);
+            Boolean scrap = alcoholService.CheckScrap(userid, id);
             List<AlcoholReviewResponseDto> review = reviewService.getReview(id);
             List<PostResponseDto> post = postService.findByAlcoholName(alcohol.getName());
             List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(userid);
 
             Map<String, Object> data = new HashMap<>();
             data.put("alcohol", alcohol);
+            data.put("scrap", scrap);
             data.put("review", review);
             data.put("post", post);
             data.put("recommendationPost", recommendationPost);
@@ -111,4 +113,12 @@ public class AlcoholController {
         return ResultResponse.success();
     }
 
+    /**
+     *
+     * 술 스크랩 여부
+     */
+    @GetMapping(value = "/alcohols/{id}/scrap")
+    public ResultResponse scrapAlcoholCheck(@PathVariable("id") Long alcoholid, Long userid) {
+        return ResultResponse.success(alcoholService.CheckScrap(userid, alcoholid));
+    }
 }
