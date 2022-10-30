@@ -1,4 +1,4 @@
-package com.alevel.backend.controller.dto;
+package com.alevel.backend.dto;
 
 import com.alevel.backend.domain.post.Post;
 import lombok.Getter;
@@ -10,25 +10,25 @@ import java.util.List;
 @Getter
 public class PostCommentsDetailResponseDto {
 
-    private Long id;
-    private String username;
-    private String title;
-    private String content;
-    private String image;
-    private Long hit;
-    private Integer commentCount;
-    private Integer scrapCount;
-    private Integer likeCount;
-    private String alcoholName;
-    private String flavor;
-    private BigDecimal volume;
-    private String price;
-    private Long body;
-    private Long sugar;
-    private LocalDateTime modifiedDate;
-    private Boolean like;
-    private Boolean scrap;
-    private List<CommentResponseDto> comments;
+    private final Long id;
+    private final String username;
+    private final String title;
+    private final String content;
+    private final String image;
+    private final Long hit;
+    private final Integer commentCount;
+    private final Integer scrapCount;
+    private final Integer likeCount;
+    private final String alcoholName;
+    private final String flavor;
+    private final BigDecimal volume;
+    private final String price;
+    private final Long body;
+    private final Long sugar;
+    private final LocalDateTime modifiedDate;
+    private final Boolean like;
+    private final Boolean scrap;
+    private final List<CommentResponseDto> comments;
 
     public PostCommentsDetailResponseDto(Post post, Boolean like, Boolean scrap, List<CommentResponseDto> dto){
         this.id = post.getId();

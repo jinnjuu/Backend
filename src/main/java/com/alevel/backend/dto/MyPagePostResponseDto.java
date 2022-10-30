@@ -1,4 +1,4 @@
-package com.alevel.backend.controller.dto;
+package com.alevel.backend.dto;
 
 import com.alevel.backend.domain.post.Post;
 import lombok.Getter;
@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 public class MyPagePostResponseDto {
 
-    private String title;
-    private String content;
-    private Long id;
-    private String image;
+    private final String title;
+    private final String content;
+    private final Long id;
+    private final String image;
     //댓글개수
-    private Integer commentCount;
+    private final Integer commentCount;
 
     public MyPagePostResponseDto(Post entity){
         this.id= entity.getId();

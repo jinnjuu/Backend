@@ -1,9 +1,9 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.controller.dto.AlcoholDetailResponseDto;
-import com.alevel.backend.controller.dto.AlcoholResponseDto;
-import com.alevel.backend.controller.dto.AlcoholReviewResponseDto;
-import com.alevel.backend.controller.dto.PostResponseDto;
+import com.alevel.backend.dto.AlcoholDetailResponseDto;
+import com.alevel.backend.dto.AlcoholResponseDto;
+import com.alevel.backend.dto.AlcoholReviewResponseDto;
+import com.alevel.backend.dto.PostResponseDto;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;

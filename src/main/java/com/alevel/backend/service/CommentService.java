@@ -1,6 +1,6 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.CommentResponseDto;
+import com.alevel.backend.dto.CommentResponseDto;
 import com.alevel.backend.domain.comment.CommentRepository;
 import com.alevel.backend.domain.post.Post;
 import lombok.RequiredArgsConstructor;

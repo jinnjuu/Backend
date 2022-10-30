@@ -1,9 +1,10 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.controller.dto.*;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
+import com.alevel.backend.dto.MyPagePostResponseDto;
+import com.alevel.backend.dto.PostCommentsDetailResponseDto;
 import com.alevel.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

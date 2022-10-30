@@ -1,6 +1,7 @@
 package com.alevel.backend.domain.alcohol;
 
-import com.alevel.backend.controller.dto.AlcoholResponseDto;
+import com.alevel.backend.dto.AlcoholResponseDto;
+import com.alevel.backend.dto.RecommendAlcoholDto;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -62,6 +63,25 @@ public class AlcoholRepositoryCustomImpl implements AlcoholRepositoryCustom {
 
     private BooleanExpression eqCategory(String category) {
         return StringUtils.isEmpty(category) ? null : alcohol.category.eq(category);
+    }
+
+    @Override
+    public List<RecommendAlcoholDto> findRecommendsById(List<Long> idArray) {
+        return queryFactory
+                .select(Projections.constructor(RecommendAlcoholDto.class, alcohol.image, alcohol.name))
+                .from(alcohol)
+                .where(alcohol.id.in(idArray))
+                .fetch();
+    }
+
+    @Override
+    public List<RecommendAlcoholDto> findRecommendsByIdAndType(List<Long> idArray, String type) {
+        return queryFactory
+                .select(Projections.constructor(RecommendAlcoholDto.class, alcohol.image, alcohol.name))
+                .from(alcohol)
+                .where(alcohol.id.in(idArray),
+                        alcohol.type.eq(type))
+                .fetch();
     }
 
 }

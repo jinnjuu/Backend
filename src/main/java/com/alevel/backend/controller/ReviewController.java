@@ -1,7 +1,7 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.controller.dto.AlcoholReviewRequestDto;
-import com.alevel.backend.controller.dto.AlcoholReviewSaveDto;
+import com.alevel.backend.dto.AlcoholReviewRequestDto;
+import com.alevel.backend.dto.AlcoholReviewSaveDto;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

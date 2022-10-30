@@ -13,4 +13,7 @@ public interface PreferenceRepository extends JpaRepository<Preference, Long> {
     @Query(value = "select p.recommendation from Preference p where p.userid = :userid")
     String findRecommendationByUserid(@Param("userid") Long userid);
 
+    @Query(value = "select p from Preference p where p.userid = :userid")
+    Preference findByUserId(@Param("userid") Long userid);
+
 }

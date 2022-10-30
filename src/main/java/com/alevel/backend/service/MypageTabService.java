@@ -1,8 +1,7 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.MypageTabDto;
+import com.alevel.backend.dto.MypageTabDto;
 import com.alevel.backend.domain.comment.CommentRepository;
-import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
 import com.alevel.backend.domain.scrapalcohol.ScrapAlcoholRepository;
 import com.alevel.backend.domain.scrappost.ScrapPostRepository;

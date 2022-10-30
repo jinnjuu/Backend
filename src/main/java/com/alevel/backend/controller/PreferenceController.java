@@ -1,7 +1,6 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.controller.dto.PostResponseDto;
-import com.alevel.backend.controller.dto.RecommendAlcoholDto;
+import com.alevel.backend.dto.PostResponseDto;
 import com.alevel.backend.domain.preference.Preference;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
@@ -46,7 +45,7 @@ public class PreferenceController {
     @GetMapping(value = "/recommendations/preference")
     public ResultResponse getRecommendationPage(Long userid, String type) {
         try {
-            List<RecommendAlcoholDto> alcohol = preferenceService.findRecommendationAlcohol(userid, type);
+            Map<String, Object> alcohol = preferenceService.findRecommendationAlcohol(userid);
             List<PostResponseDto> post = preferenceService.findRecommendationPost(userid);
             List<PostResponseDto> topPost = preferenceService.findRecommendationTopPost();
 
@@ -66,9 +65,9 @@ public class PreferenceController {
      * 사용: PreferenceController.getRecommendationPage
      */
     @GetMapping(value = "/recommendations/alcohol")
-    public ResultResponse getRecommendationAlcohol(Long userid, String type) {
+    public ResultResponse getRecommendationAlcohol(Long userid) {
         try {
-            return ResultResponse.success(preferenceService.findRecommendationAlcohol(userid, type));
+            return ResultResponse.success(preferenceService.findRecommendationAlcohol(userid));
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_ALCOHOL);
         }

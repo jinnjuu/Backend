@@ -1,11 +1,11 @@
-package com.alevel.backend.controller.dto;
+package com.alevel.backend.dto;
 
 import com.alevel.backend.domain.alcohol.Alcohol;
 import lombok.Getter;
 
 @Getter
 public class AlcoholDetailResponseDto {
-    private Long id;
+    private final Long id;
     private final String name;
     private final String volume;
     private final String size;
