@@ -20,11 +20,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Clean with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: clean
+      run: ./gradlew clean
 
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build -x test
+      run: ./gradlew build -x test
