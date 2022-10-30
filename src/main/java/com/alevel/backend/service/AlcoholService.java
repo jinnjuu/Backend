@@ -53,4 +53,10 @@ public class AlcoholService {
                 }
         );
     }
+
+    public boolean CheckScrap(Long userId, Long alcoholId) {
+        User user = userRepository.getReferenceById(userId);
+        Alcohol alcohol = alcoholRepository.getReferenceById(alcoholId);
+        return scrapAlcoholRepository.findByUserAndAlcohol(user, alcohol).isPresent();
+    }
 }

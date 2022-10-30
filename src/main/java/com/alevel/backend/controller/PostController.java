@@ -22,12 +22,12 @@ public class PostController {
 
     /**
      *
-     * 게시글 상세 페이지 - 게시글 상세정보, 댓글
+     * 게시글 상세 페이지 - 게시글 상세정보, 좋아요여부, 스크랩여부, 댓글
      */
     @GetMapping("/posts/{id}")
-    public ResultResponse findPostById (@PathVariable Long id){
+    public ResultResponse findPostById (@PathVariable Long id, Long userid){
         try {
-            PostCommentsDetailResponseDto post = postService.findPostAndCommentsById(id);
+            PostCommentsDetailResponseDto post = postService.findPostAndCommentsById(id, userid);
             return ResultResponse.success(post);
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);
@@ -59,6 +59,24 @@ public class PostController {
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);
         }
+    }
+
+    /**
+     *
+     * 게시글 좋아요 여부
+     */
+    @GetMapping(value = "/posts/{id}/like")
+    public ResultResponse likePostCheck(@PathVariable("id") Long postid, Long userid) {
+        return ResultResponse.success(postService.CheckLike(userid, postid));
+    }
+
+    /**
+     *
+     * 게시글 스크랩 여부
+     */
+    @GetMapping(value = "/posts/{id}/scrap")
+    public ResultResponse scrapPostCheck(@PathVariable("id") Long postid, Long userid) {
+        return ResultResponse.success(postService.CheckScrap(userid, postid));
     }
 
 }

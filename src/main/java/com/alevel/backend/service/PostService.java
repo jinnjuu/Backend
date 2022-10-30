@@ -1,8 +1,12 @@
 package com.alevel.backend.service;
 
 import com.alevel.backend.controller.dto.*;
+import com.alevel.backend.domain.likepost.LikePostRepository;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
+import com.alevel.backend.domain.scrappost.ScrapPostRepository;
+import com.alevel.backend.domain.user.User;
+import com.alevel.backend.domain.user.UserRepository;
 import com.alevel.backend.exception.InvalidatePostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -17,6 +21,9 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final CommentService commentService;
+    private final UserRepository userRepository;
+    private final LikePostRepository likePostRepository;
+    private final ScrapPostRepository scrapPostRepository;
 
     @Transactional
     public MyPagePostResponseDto findByUserId(Long id){
@@ -82,12 +89,14 @@ public class PostService {
         return dto;
     }
 
-    public PostCommentsDetailResponseDto findPostAndCommentsById(Long id) {
+    public PostCommentsDetailResponseDto findPostAndCommentsById(Long id, Long userid) {
         Post post = postRepository.findByIdAndStatusTrue(id).orElseThrow(
                 () -> new InvalidatePostException()
         );
         List<CommentResponseDto> comments = commentService.findCommentseByPost(post);
-        return new PostCommentsDetailResponseDto(post, comments);
+        Boolean like = CheckLike(userid, id);
+        Boolean scrap = CheckScrap(userid, id);
+        return new PostCommentsDetailResponseDto(post, like, scrap, comments);
     }
 
     public List<PostDetailResponseDto> findPosts() {
@@ -103,4 +112,15 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
+    public boolean CheckLike(Long userId, Long postId) {
+        User user = userRepository.getReferenceById(userId);
+        Post post = postRepository.getReferenceById(postId);
+        return likePostRepository.findByUserAndPost(user, post).isPresent();
+    }
+
+    public boolean CheckScrap(Long userId, Long postId) {
+        User user = userRepository.getReferenceById(userId);
+        Post post = postRepository.getReferenceById(postId);
+        return scrapPostRepository.findByUserAndPost(user, post).isPresent();
+    }
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class AlcoholDetailResponseDto {
+    private Long id;
     private final String name;
     private final String volume;
     private final String size;
@@ -17,6 +18,7 @@ public class AlcoholDetailResponseDto {
     private final String info; // 상세설명
 
     public AlcoholDetailResponseDto(Alcohol alcohol) {
+        this.id = alcohol.getId();
         this.name = alcohol.getName();
         this.volume = alcohol.getVolume();
         this.size = alcohol.getSize();
