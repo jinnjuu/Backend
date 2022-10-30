@@ -1,16 +1,15 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.PostResponseDto;
-import com.alevel.backend.controller.dto.RecommendAlcoholDto;
-import com.alevel.backend.domain.alcohol.Alcohol;
+import com.alevel.backend.dto.PostResponseDto;
 import com.alevel.backend.domain.alcohol.AlcoholRepository;
 import com.alevel.backend.domain.preference.Preference;
 import com.alevel.backend.domain.preference.PreferenceRepository;
+import com.alevel.backend.dto.RecommendAlcoholDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PreferenceService {
@@ -43,17 +42,18 @@ public class PreferenceService {
         return resultList.substring(1).substring(0, resultList.length() -2);
     }
 
-    public List<RecommendAlcoholDto> findRecommendationAlcohol (Long userid, String type) {
-        List<RecommendAlcoholDto> result = new ArrayList();
-        String recommendation = preferenceRepository.findRecommendationByUserid(userid);
-        String[] IdArray = recommendation.replaceAll(" ","").split(",");
+    public Map<String, Object> findRecommendationAlcohol (Long userid) {
+        Map<String, Object> result = new HashMap<>();
+        Preference preference = preferenceRepository.findByUserId(userid);
+        List<Long> IdArray = Arrays.stream(preference.getRecommendation().replaceAll(" ","").split(",")).collect(Collectors.toList())
+                .stream().map(Long::parseLong).collect(Collectors.toList());
+        String[] TypeArray = preference.getType().replaceAll(" ","").split(",");
 
-        for (String s : IdArray) {
-            Alcohol alcohol = alcoholRepository.findAlcoholById(Long.parseLong(s));
-
-            if (type.equals("") || alcohol.getType().equals(type)) {
-                result.add(new RecommendAlcoholDto(alcohol));
-            }
+        List<RecommendAlcoholDto> allAlcohols = alcoholRepository.findRecommendsById(IdArray);
+        result.put("alcohols", allAlcohols);
+        for (String type : TypeArray) {
+            List<RecommendAlcoholDto> typeAlcohol = alcoholRepository.findRecommendsByIdAndType(IdArray, type);
+            result.put(type, typeAlcohol);
         }
         return result;
     }
@@ -64,8 +64,8 @@ public class PreferenceService {
         String[] IdArray = recommendation.replaceAll(" ","").split(",");
 
         String alcoholName;
-        for (String s : IdArray) {
-            alcoholName = alcoholRepository.findAlcoholById(Long.parseLong(s)).getName();
+        for (String id : IdArray) {
+            alcoholName = alcoholRepository.findAllById(Long.parseLong(id)).getName();
             List<PostResponseDto> dto = postService.findByAlcoholName(alcoholName);
 
             if (dto != null) {

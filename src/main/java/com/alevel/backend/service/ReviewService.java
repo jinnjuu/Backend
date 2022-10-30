@@ -1,7 +1,7 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.AlcoholReviewResponseDto;
-import com.alevel.backend.controller.dto.AlcoholReviewSaveDto;
+import com.alevel.backend.dto.AlcoholReviewResponseDto;
+import com.alevel.backend.dto.AlcoholReviewSaveDto;
 import com.alevel.backend.domain.alcohol.Alcohol;
 import com.alevel.backend.domain.alcohol.AlcoholRepository;
 import com.alevel.backend.domain.review.Review;

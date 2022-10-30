@@ -1,6 +1,6 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.MypageAccountResponseDto;
+import com.alevel.backend.dto.MypageAccountResponseDto;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
 import com.alevel.backend.exception.*;

@@ -1,4 +1,4 @@
-package com.alevel.backend.controller.dto;
+package com.alevel.backend.dto;
 
 import lombok.Getter;
 import lombok.Setter;

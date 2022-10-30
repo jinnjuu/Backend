@@ -1,5 +1,5 @@
 package com.alevel.backend.domain.comment;
-import com.alevel.backend.controller.dto.CommentResponseDto;
+import com.alevel.backend.dto.CommentResponseDto;
 import com.alevel.backend.domain.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

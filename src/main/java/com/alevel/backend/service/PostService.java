@@ -1,12 +1,12 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.*;
 import com.alevel.backend.domain.likepost.LikePostRepository;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
 import com.alevel.backend.domain.scrappost.ScrapPostRepository;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
+import com.alevel.backend.dto.*;
 import com.alevel.backend.exception.InvalidatePostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
