@@ -33,6 +33,9 @@ public interface AlcoholRepository extends JpaRepository<Alcohol, Long>, Alcohol
 
     Alcohol findAllById(Long id);
 
+    @Query(value="select distinct a.type from Alcohol a")
+    List<String> findDistinctType();
+
     //search
     List<Alcohol> findByNameContaining(String keyword);
 }
