@@ -19,6 +19,7 @@ public class PostDetailResponseDto {
     private final Integer scrapCount;
     private final Integer likeCount;
     private final String alcoholName;
+    private final String alcoholType;
     private final String flavor;
     private final BigDecimal volume;
     private final String price;
@@ -39,6 +40,7 @@ public class PostDetailResponseDto {
         this.modifiedDate = post.getModifiedDate();
 
         this.alcoholName = post.getAlcoholName();
+        this.alcoholType = post.getAlcoholType();
         this.flavor = post.getFlavor();
         this.volume = post.getVolume();
         this.price = post.getPrice();
