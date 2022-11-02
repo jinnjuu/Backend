@@ -42,7 +42,8 @@ public class ReviewService {
     }
 
     public List<AlcoholReviewResponseDto> getReview(Long id){
-        return reviewRepository.findAllByAlcoholId(id);
+        List<AlcoholReviewResponseDto> review = reviewRepository.findAllByAlcoholId(id);
+        return review.isEmpty() ? null : review;
     }
 
     public void deleteReviewById(Long id){
