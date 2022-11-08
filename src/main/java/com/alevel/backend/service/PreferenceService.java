@@ -47,12 +47,18 @@ public class PreferenceService {
         Preference preference = preferenceRepository.findByUserId(userid);
         List<Long> IdArray = Arrays.stream(preference.getRecommendation().replaceAll(" ","").split(",")).collect(Collectors.toList())
                 .stream().map(Long::parseLong).collect(Collectors.toList());
-        String[] TypeArray = preference.getType().replaceAll(" ","").split(",");
+        List<String> TypeList = alcoholRepository.findDistinctType();
 
         List<RecommendAlcoholDto> allAlcohols = alcoholRepository.findRecommendsById(IdArray);
         result.put("alcohols", allAlcohols);
-        for (String type : TypeArray) {
+        for (String type : TypeList) {
             List<RecommendAlcoholDto> typeAlcohol = alcoholRepository.findRecommendsByIdAndType(IdArray, type);
+            switch(type) {
+                case "와인": type="wine"; break;
+                case "맥주": type="beer"; break;
+                case "전통주": type="sool"; break;
+                case "양주": type="liquor"; break;
+            }
             result.put(type, typeAlcohol);
         }
         return result;
