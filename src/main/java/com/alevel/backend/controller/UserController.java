@@ -4,43 +4,55 @@ import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
 import com.alevel.backend.domain.user.User;
+import com.alevel.backend.dto.LoginDto;
+import com.alevel.backend.dto.UserDto;
+import com.alevel.backend.jwt.TokenProvider;
 import com.alevel.backend.service.MailService;
 import com.alevel.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/api/")
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final TokenProvider tokenProvider;
 
     @Autowired
     private MailService mailService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(
+            UserService userService,
+            AuthenticationManagerBuilder authenticationManagerBuilder,
+            TokenProvider tokenProvider) {
         this.userService = userService;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.tokenProvider = tokenProvider;
     }
+
 
     /**
      * 로그인
      */
-    @GetMapping(value = "/users/login")
-    public ResultResponse login(@Valid String email, String password) {
-        User user = userService.login(email, password);
-        return ResultResponse.success(user.getId());
+    @PostMapping("/login")
+    public ResultResponse authorize(@Valid @RequestBody LoginDto loginDto) {
+        return ResultResponse.success(userService.login(loginDto));
     }
 
     /**
      * 회원가입
      */
-    @PostMapping(value = "/users/signup")
-    public ResultResponse signup(String email, String password, String username) {
-        userService.validateDuplicateEmail(email);
-        userService.validateDuplicateUsername(username);
-        User user = userService.signup(email, password, username);
+    @PostMapping(value = "/signup")
+    public ResultResponse signup(@RequestBody UserDto dto) {
+        userService.validateDuplicateEmail(dto.getEmail());
+        userService.validateDuplicateUsername(dto.getUsername());
+        User user = userService.signup(dto);
         return ResultResponse.success(user.getId());
     }
 
