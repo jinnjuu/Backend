@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/api/")
@@ -68,8 +69,8 @@ public class UserController {
     /**
      * 이메일 인증
      */
-    @GetMapping(value = "/users/check/email")
-    public ResultResponse checkEmail(@Valid String email) {
+    @PostMapping(value = "/users/check/email")
+    public ResultResponse sendEmail(@NotNull String email) {
         try {
             userService.validateDuplicateEmail(email);
             System.out.println("가입 가능한 이메일: " + email);
@@ -77,15 +78,24 @@ public class UserController {
             return ResultResponse.fail(StatusCode.CONFLICT, ResponseMessage.DUPLICATED_EMAIL);
         }
 
-        int key = mailService.createKey();
-        String subject = "[한잔할래] 회원가입 인증 메일입니다.";
-        String content = "인증번호 : " + key +
-                "<br>";
-        if (mailService.sendMail(email, subject, content)) {
+        if (mailService.sendMail(email)) {
             return ResultResponse.success();
         } else {
             return ResultResponse.fail(StatusCode.INTERNAL_SERVER_ERROR, ResponseMessage.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * 인증 확인
+     */
+    @GetMapping(value = "/users/check/email")
+    public ResultResponse confirmToken(String email, String token) {
+        try {
+            mailService.confirmToken(email, token);
+        } catch (Exception e) {
+            return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_TOKEN);
+        }
+        return ResultResponse.success();
     }
 
     /**

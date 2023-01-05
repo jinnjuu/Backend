@@ -6,7 +6,6 @@ import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
 import com.alevel.backend.dto.UserDto;
 import com.alevel.backend.dto.TokenDto;
-import com.alevel.backend.enums.Authority;
 import com.alevel.backend.exception.*;
 import com.alevel.backend.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +54,12 @@ public class UserService {
     }
 
     public User signup(UserDto dto) {
-        User user = User.builder()
-                .email(dto.getEmail())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .username(dto.getUsername())
-                .authorities(Authority.ROLE_USER)
-                .status(true)
-                .build();
-        return userRepository.save(user);
+        return userRepository.save(
+                new User(
+                    dto.getEmail(),
+                    passwordEncoder.encode(dto.getPassword()),
+                    dto.getUsername()
+                ));
     }
 
     public void validateDuplicateUsername(String username) {

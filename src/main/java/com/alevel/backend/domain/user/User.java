@@ -10,9 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class User extends BaseTimeEntity {
 
@@ -30,9 +28,17 @@ public class User extends BaseTimeEntity {
     private String username;
 
     @Column(columnDefinition = "TINYINT", length = 1)
-    private boolean status = true;
+    private boolean status;
 
     @Enumerated(EnumType.STRING)
     private Authority authorities;
 
+    @Builder
+    public User(String email, String password, String username) {
+        this.email = email;
+        this.password = password;
+        this.username = username;
+        this.authorities = Authority.ROLE_USER;
+        this.status = true;
+    }
 }
