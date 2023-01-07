@@ -16,7 +16,11 @@ cd ~/alevel
 JAR_NAME=$(ls | grep backend)
 echo "JAR_NAME: $JAR_NAME"
 
-mkdir logs
+LOGDIR="$HOME/logs"
+if [ ! -d $LOGDIR ];then
+  mkdir -p $LOGDIR
+fi
+
 DATE=$(date +%Y%m%d_%H:%M:%S)
-nohup java -jar $JAR_NAME > ./logs/$DATE.log 2>&1 &
+nohup java -jar $JAR_NAME > $LOGDIR/$DATE.log 2>&1 &
 #nohup java -jar $JAR_NAME > /dev/null 2>&1 &
