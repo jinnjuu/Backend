@@ -5,8 +5,10 @@ import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
 import com.alevel.backend.dto.MyPagePostResponseDto;
 import com.alevel.backend.dto.PostCommentsDetailResponseDto;
+import com.alevel.backend.jwt.CustomUserDetails;
 import com.alevel.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,19 +24,6 @@ public class PostController {
         return postService.findByUserId(id);
     }
 
-    /**
-     *
-     * 게시글 상세 페이지 - 게시글 상세정보, 좋아요여부, 스크랩여부, 댓글
-     */
-    @GetMapping("/posts/{id}")
-    public ResultResponse findPostById (@PathVariable Long id, Long userid){
-        try {
-            PostCommentsDetailResponseDto post = postService.findPostAndCommentsById(id, userid);
-            return ResultResponse.success(post);
-        } catch (Exception e) {
-            return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);
-        }
-    }
 
     /**
      *
@@ -44,6 +33,20 @@ public class PostController {
     public ResultResponse findPosts (){
         try {
             return ResultResponse.success(postService.findPosts());
+        } catch (Exception e) {
+            return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);
+        }
+    }
+
+    /**
+     *
+     * 게시글 상세 페이지 - 게시글 상세정보, 좋아요여부, 스크랩여부, 댓글
+     */
+    @GetMapping("/posts/{id}")
+    public ResultResponse findPostById (@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails user){
+        try {
+            PostCommentsDetailResponseDto post = postService.findPostAndCommentsById(id, user.getId());
+            return ResultResponse.success(post);
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);
         }
@@ -68,8 +71,8 @@ public class PostController {
      * 게시글 좋아요 여부
      */
     @GetMapping(value = "/posts/{id}/like")
-    public ResultResponse likePostCheck(@PathVariable("id") Long postid, Long userid) {
-        return ResultResponse.success(postService.CheckLike(userid, postid));
+    public ResultResponse likePostCheck(@PathVariable("id") Long postid, @AuthenticationPrincipal CustomUserDetails user) {
+        return ResultResponse.success(postService.CheckLike(user.getId(), postid));
     }
 
     /**
@@ -77,8 +80,8 @@ public class PostController {
      * 게시글 스크랩 여부
      */
     @GetMapping(value = "/posts/{id}/scrap")
-    public ResultResponse scrapPostCheck(@PathVariable("id") Long postid, Long userid) {
-        return ResultResponse.success(postService.CheckScrap(userid, postid));
+    public ResultResponse scrapPostCheck(@PathVariable("id") Long postid, @AuthenticationPrincipal CustomUserDetails user) {
+        return ResultResponse.success(postService.CheckScrap(user.getId(), postid));
     }
 
 }
