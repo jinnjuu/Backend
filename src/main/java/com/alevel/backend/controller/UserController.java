@@ -6,11 +6,14 @@ import com.alevel.backend.domain.response.StatusCode;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.dto.LoginDto;
 import com.alevel.backend.dto.UserDto;
+import com.alevel.backend.jwt.CustomUserDetails;
 import com.alevel.backend.jwt.TokenProvider;
+import com.alevel.backend.service.AuthService;
 import com.alevel.backend.service.MailService;
 import com.alevel.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +23,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/api/")
 public class UserController {
 
+    private final AuthService authService;
     private final UserService userService;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
@@ -29,9 +33,11 @@ public class UserController {
 
     @Autowired
     public UserController(
+            AuthService authService,
             UserService userService,
             AuthenticationManagerBuilder authenticationManagerBuilder,
             TokenProvider tokenProvider) {
+        this.authService = authService;
         this.userService = userService;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.tokenProvider = tokenProvider;
@@ -43,7 +49,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public ResultResponse authorize(@Valid @RequestBody LoginDto loginDto) {
-        return ResultResponse.success(userService.login(loginDto));
+        return ResultResponse.success(authService.login(loginDto));
     }
 
     /**
@@ -102,39 +108,39 @@ public class UserController {
      * 회원탈퇴
      */
     @PutMapping(value = "/users/withdrawal")
-    public ResultResponse withdrawal(Long id) {
-        userService.remove(id);
+    public ResultResponse withdrawal(@AuthenticationPrincipal CustomUserDetails user) {
+        userService.remove(user.getId());
         return ResultResponse.success();
     }
 
     /**
      * 별명 변경
      */
-    @PutMapping(value = "/users/username/{id}")
-    public ResultResponse putUsername(@PathVariable("id") Long id, String username) {
+    @PutMapping(value = "/users/username")
+    public ResultResponse putUsername(String username, @AuthenticationPrincipal CustomUserDetails user) {
         userService.validateDuplicateUsername(username);
-        userService.updateUsername(id, username);
+        User principal = userService.updateUsername(user.getId(), username);
         return ResultResponse.success();
     }
 
     /**
      * 비밀번호 변경
      */
-    @PutMapping(value = "/users/password/{id}")
-    public ResultResponse updatePassword(@PathVariable("id") Long id, String password, String passwordConfirm) {
+    @PutMapping(value = "/users/password")
+    public ResultResponse updatePassword(String password, String passwordConfirm, @AuthenticationPrincipal CustomUserDetails user) {
         if (!password.equals(passwordConfirm)) {
             return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.INVALIDATED_PASSWORD);
         }
-        userService.updatePassword(id, password);
+        userService.updatePassword(user.getId(), password);
         return ResultResponse.success();
     }
 
     /**
      * 내 계정 조회
      */
-    @GetMapping(value = "/users/mypage/{id}")
-    public ResultResponse getMypageAccount(@PathVariable("id") Long id) {
-        return ResultResponse.success(userService.getAccount(id));
+    @GetMapping(value = "/users/mypage")
+    public ResultResponse getMypageAccount(@AuthenticationPrincipal CustomUserDetails user) {
+        return ResultResponse.success(userService.getAccount(user.getId()));
     }
 
 }

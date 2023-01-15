@@ -1,5 +1,6 @@
 package com.alevel.backend.jwt;
 
+import com.alevel.backend.domain.user.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -29,11 +29,16 @@ public class TokenProvider implements InitializingBean {
    private final long tokenValidityInMilliseconds;
    private Key key;
 
+   private final UserRepository userRepository;
+
    public TokenProvider(
       @Value("${jwt.secret}") String secret,
-      @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+      @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds,
+      UserRepository userRepository
+   ) {
       this.secret = secret;
       this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+      this.userRepository = userRepository;
    }
 
    @Override
@@ -71,7 +76,10 @@ public class TokenProvider implements InitializingBean {
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
 
-      User principal = new User(claims.getSubject(), "", authorities);
+      CustomUserDetails principal = new CustomUserDetails(
+              userRepository.findUserByEmail(claims.getSubject()),
+              authorities
+      );
 
       return new UsernamePasswordAuthenticationToken(principal, token, authorities);
    }
