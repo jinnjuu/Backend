@@ -1,4 +1,4 @@
-package com.alevel.backend.controller.dto;
+package com.alevel.backend.dto;
 
 import com.alevel.backend.domain.user.User;
 import lombok.Getter;
@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 public class MypageAccountResponseDto {
 
-    private String username;
-    private String email;
-    private String password;
+    private final String username;
+    private final String email;
+    private final String password;
 
     public MypageAccountResponseDto(User entity){
         this.username = entity.getUsername();

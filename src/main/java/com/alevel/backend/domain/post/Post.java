@@ -3,10 +3,7 @@ package com.alevel.backend.domain.post;
 import com.alevel.backend.domain.BaseTimeEntity;
 import com.alevel.backend.domain.user.User;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Formula;
 
@@ -19,6 +16,7 @@ import java.math.BigDecimal;
 @DynamicInsert
 @Entity
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,14 +1,13 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.AlcoholDetailResponseDto;
-import com.alevel.backend.controller.dto.AlcoholResponseDto;
+import com.alevel.backend.dto.AlcoholDetailResponseDto;
+import com.alevel.backend.dto.AlcoholResponseDto;
 import com.alevel.backend.domain.alcohol.Alcohol;
 import com.alevel.backend.domain.alcohol.AlcoholRepository;
 import com.alevel.backend.domain.scrapalcohol.ScrapAlcohol;
 import com.alevel.backend.domain.scrapalcohol.ScrapAlcoholRepository;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,14 +27,12 @@ public class AlcoholService {
         this.userRepository = userRepository;
     }
 
-    private JPAQueryFactory queryFactory;
-
     public Page<AlcoholResponseDto> findAllAlcohol(String type, String category, Pageable pageable) {
         return alcoholRepository.findAllAlcohol(type, category, pageable);
     }
 
     public AlcoholDetailResponseDto findAlcoholDetail(Long id) {
-        Alcohol alcohol = alcoholRepository.findAlcoholById(id);
+        Alcohol alcohol = alcoholRepository.findAllById(id);
         return new AlcoholDetailResponseDto(alcohol);
     }
 

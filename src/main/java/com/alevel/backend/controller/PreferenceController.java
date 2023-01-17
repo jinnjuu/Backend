@@ -1,13 +1,15 @@
 package com.alevel.backend.controller;
 
-import com.alevel.backend.controller.dto.PostResponseDto;
-import com.alevel.backend.controller.dto.RecommendAlcoholDto;
+import com.alevel.backend.dto.PostResponseDto;
 import com.alevel.backend.domain.preference.Preference;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
+import com.alevel.backend.dto.PreferenceRequestDto;
+import com.alevel.backend.jwt.CustomUserDetails;
 import com.alevel.backend.service.PreferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/")
 public class PreferenceController {
 
     private final PreferenceService preferenceService;
@@ -27,12 +30,24 @@ public class PreferenceController {
     /**
      * 술 취향 등록
      */
-    @PostMapping(value = "/users/preference")
-    public ResultResponse savePreference(@RequestBody Preference preference) {
+    @PostMapping(value = "/recommendations/preference")
+    public ResultResponse savePreference(
+            @RequestBody PreferenceRequestDto preference,
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
         try {
             String recommendation = preferenceService.getRecommendationId(preference);
-            preference.setRecommendation(recommendation);
-            preferenceService.insert(preference);
+            preferenceService.insert(
+                    new Preference(
+                            user.getId(),
+                            preference.getType(),
+                            preference.getVolume(),
+                            preference.getSugar(),
+                            preference.getFlavor(),
+                            preference.getPrice(),
+                            recommendation
+                    )
+            );
             return ResultResponse.success();
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.BAD_REQUEST, ResponseMessage.FAIL);
@@ -44,10 +59,10 @@ public class PreferenceController {
      * 술 추천 페이지 - 술 추천, 추천게시글, 인기게시글
      */
     @GetMapping(value = "/recommendations/preference")
-    public ResultResponse getRecommendationPage(Long userid, String type) {
+    public ResultResponse getRecommendationPage(String type, @AuthenticationPrincipal CustomUserDetails user) {
         try {
-            List<RecommendAlcoholDto> alcohol = preferenceService.findRecommendationAlcohol(userid, type);
-            List<PostResponseDto> post = preferenceService.findRecommendationPost(userid);
+            Map<String, Object> alcohol = preferenceService.findRecommendationAlcohol(user.getId());
+            List<PostResponseDto> post = preferenceService.findRecommendationPost(user.getId());
             List<PostResponseDto> topPost = preferenceService.findRecommendationTopPost();
 
             Map<String, Object> data = new HashMap<>();
@@ -66,9 +81,9 @@ public class PreferenceController {
      * 사용: PreferenceController.getRecommendationPage
      */
     @GetMapping(value = "/recommendations/alcohol")
-    public ResultResponse getRecommendationAlcohol(Long userid, String type) {
+    public ResultResponse getRecommendationAlcohol(@AuthenticationPrincipal CustomUserDetails user) {
         try {
-            return ResultResponse.success(preferenceService.findRecommendationAlcohol(userid, type));
+            return ResultResponse.success(preferenceService.findRecommendationAlcohol(user.getId()));
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_ALCOHOL);
         }
@@ -81,9 +96,9 @@ public class PreferenceController {
      *      PreferenceController.getRecommendationPage
      */
     @GetMapping(value = "/recommendations/post")
-    public ResultResponse getRecommendationPost(Long userid) {
+    public ResultResponse getRecommendationPost(@AuthenticationPrincipal CustomUserDetails user) {
         try {
-            List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(userid);
+            List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(user.getId());
             return ResultResponse.success(recommendationPost);
         } catch (Exception e) {
             return ResultResponse.fail(StatusCode.NOT_FOUND, ResponseMessage.INVALIDATED_POST);

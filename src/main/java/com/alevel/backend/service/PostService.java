@@ -1,12 +1,11 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.controller.dto.*;
 import com.alevel.backend.domain.likepost.LikePostRepository;
 import com.alevel.backend.domain.post.Post;
 import com.alevel.backend.domain.post.PostRepository;
 import com.alevel.backend.domain.scrappost.ScrapPostRepository;
 import com.alevel.backend.domain.user.User;
-import com.alevel.backend.domain.user.UserRepository;
+import com.alevel.backend.dto.*;
 import com.alevel.backend.exception.InvalidatePostException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final CommentService commentService;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final LikePostRepository likePostRepository;
     private final ScrapPostRepository scrapPostRepository;
 
@@ -113,14 +112,19 @@ public class PostService {
     }
 
     public boolean CheckLike(Long userId, Long postId) {
-        User user = userRepository.getReferenceById(userId);
-        Post post = postRepository.getReferenceById(postId);
+        User user = userService.findById(userId);
+        Post post = findById(postId);
         return likePostRepository.findByUserAndPost(user, post).isPresent();
     }
 
     public boolean CheckScrap(Long userId, Long postId) {
-        User user = userRepository.getReferenceById(userId);
-        Post post = postRepository.getReferenceById(postId);
+        User user = userService.findById(userId);
+        Post post = findById(postId);
         return scrapPostRepository.findByUserAndPost(user, post).isPresent();
+    }
+
+    public Post findById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new InvalidatePostException());
     }
 }

@@ -1,15 +1,14 @@
-package com.alevel.backend.controller.dto;
+package com.alevel.backend.dto;
 
-import com.alevel.backend.domain.post.Post;
 import lombok.Getter;
 
 @Getter
 public class MypageTabDto {
 
-    private int MyPostCount;
-    private int MyCommentCount;
-    private int MyScrapAlcoholCount;
-    private int MyScrapPostCount;
+    private final int MyPostCount;
+    private final int MyCommentCount;
+    private final int MyScrapAlcoholCount;
+    private final int MyScrapPostCount;
 //    private String MyUserNameReturn;
 
 //    //post의 postcount를 어케 받아오고 아는지.
