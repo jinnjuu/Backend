@@ -7,6 +7,7 @@ import com.alevel.backend.dto.PostResponseDto;
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.ResultResponse;
 import com.alevel.backend.domain.response.StatusCode;
+import com.alevel.backend.jwt.CustomUserDetails;
 import com.alevel.backend.service.AlcoholService;
 import com.alevel.backend.service.PostService;
 import com.alevel.backend.service.PreferenceService;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -65,13 +67,13 @@ public class AlcoholController {
      * 술 상세 페이지 - 술 상세정보, 술 스크랩여부, 한줄리뷰, 게시글, 추천게시글
      */
     @GetMapping(value = "/alcohols/{id}")
-    public ResultResponse getAlcoholDetailPage(@PathVariable("id") Long id, Long userid) {
+    public ResultResponse getAlcoholDetailPage(@PathVariable("id") Long id, @AuthenticationPrincipal CustomUserDetails user) {
         try {
             AlcoholDetailResponseDto alcohol = alcoholService.findAlcoholDetail(id);
-            Boolean scrap = alcoholService.CheckScrap(userid, id);
+            Boolean scrap = alcoholService.CheckScrap(user.getId(), id);
             List<AlcoholReviewResponseDto> review = reviewService.getReview(id);
             List<PostResponseDto> post = postService.findByAlcoholName(alcohol.getName());
-            List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(userid);
+            List<PostResponseDto> recommendationPost = preferenceService.findRecommendationPost(user.getId());
 
             Map<String, Object> data = new HashMap<>();
             data.put("alcohol", alcohol);
@@ -106,8 +108,8 @@ public class AlcoholController {
      * 술 스크랩
      */
     @PostMapping(value = "/alcohols/{id}/scrap")
-    public ResultResponse scrapAlcohol(@PathVariable("id") Long alcoholid, Long userid) {
-        alcoholService.scrapAlcohol(userid, alcoholid);
+    public ResultResponse scrapAlcohol(@PathVariable("id") Long alcoholid, @AuthenticationPrincipal CustomUserDetails user) {
+        alcoholService.scrapAlcohol(user.getId(), alcoholid);
         return ResultResponse.success();
     }
 
@@ -116,7 +118,7 @@ public class AlcoholController {
      * 술 스크랩 여부
      */
     @GetMapping(value = "/alcohols/{id}/scrap")
-    public ResultResponse scrapAlcoholCheck(@PathVariable("id") Long alcoholid, Long userid) {
-        return ResultResponse.success(alcoholService.CheckScrap(userid, alcoholid));
+    public ResultResponse scrapAlcoholCheck(@PathVariable("id") Long alcoholid, @AuthenticationPrincipal CustomUserDetails user) {
+        return ResultResponse.success(alcoholService.CheckScrap(user.getId(), alcoholid));
     }
 }

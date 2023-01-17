@@ -65,17 +65,18 @@ public class PreferenceService {
     }
 
     public List<PostResponseDto> findRecommendationPost (Long userid) {
-        List<PostResponseDto> result = new ArrayList();
+        List<PostResponseDto> result = null;
         String recommendation = preferenceRepository.findRecommendationByUserid(userid);
-        String[] IdArray = recommendation.replaceAll(" ","").split(",");
+        if (recommendation != null) {
+            String[] IdArray = recommendation.replaceAll(" ", "").split(",");
+            String alcoholName;
+            for (String id : IdArray) {
+                alcoholName = alcoholRepository.findAllById(Long.parseLong(id)).getName();
+                List<PostResponseDto> dto = postService.findByAlcoholName(alcoholName);
 
-        String alcoholName;
-        for (String id : IdArray) {
-            alcoholName = alcoholRepository.findAllById(Long.parseLong(id)).getName();
-            List<PostResponseDto> dto = postService.findByAlcoholName(alcoholName);
-
-            if (dto != null) {
-                result.add(dto.get(0));
+                if (dto != null) {
+                    result.add(dto.get(0));
+                }
             }
         }
         return result;

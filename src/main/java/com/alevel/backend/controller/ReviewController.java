@@ -2,11 +2,13 @@ package com.alevel.backend.controller;
 
 import com.alevel.backend.domain.response.ResponseMessage;
 import com.alevel.backend.domain.response.StatusCode;
-import com.alevel.backend.dto.AlcoholReviewRequestDto;
 import com.alevel.backend.dto.AlcoholReviewSaveDto;
 import com.alevel.backend.domain.response.ResultResponse;
+import com.alevel.backend.dto.ContentRequestDto;
+import com.alevel.backend.jwt.CustomUserDetails;
 import com.alevel.backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,8 +27,12 @@ public class ReviewController {
      * 한 줄 리뷰 작성
      */
     @PostMapping(value = "/alcohols/{id}/review")
-    public ResultResponse saveReview(@PathVariable("id") Long id, @RequestBody AlcoholReviewRequestDto request){
-        AlcoholReviewSaveDto dto = new AlcoholReviewSaveDto(id, request.getUserid(), request.getContent());
+    public ResultResponse saveReview(
+            @PathVariable("id") Long id,
+            @RequestBody ContentRequestDto request,
+            @AuthenticationPrincipal CustomUserDetails user
+    ){
+        AlcoholReviewSaveDto dto = new AlcoholReviewSaveDto(id, user.getId(), request.getContent());
         reviewService.saveReview(dto);
         return ResultResponse.success();
     }

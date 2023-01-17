@@ -7,13 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AlcoholReviewRequestDto {
+public class ContentRequestDto {
 
-    private Long userid;
     private String content;
 
-    public AlcoholReviewRequestDto(Long userid, String content) {
-        this.userid = userid;
+    public ContentRequestDto(String content) {
         this.content = content;
     }
 
