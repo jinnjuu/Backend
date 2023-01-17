@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,6 +30,7 @@ public class Preference {
     
     @Builder
     public Preference(Long user_id, String type, int volume, int sugar, String flavor, String price, String recommendation) {
+        this.userid=user_id;
         this.type=type;
         this.volume=volume;
         this.sugar=sugar;

@@ -1,22 +1,15 @@
 package com.alevel.backend.service;
 
-import com.alevel.backend.dto.LoginDto;
 import com.alevel.backend.dto.MypageAccountResponseDto;
 import com.alevel.backend.domain.user.User;
 import com.alevel.backend.domain.user.UserRepository;
 import com.alevel.backend.dto.UserDto;
-import com.alevel.backend.dto.TokenDto;
 import com.alevel.backend.exception.*;
-import com.alevel.backend.jwt.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -24,7 +17,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final TokenProvider tokenProvider;
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -32,25 +24,9 @@ public class UserService {
     @Autowired
     public UserService(
             UserRepository userRepository,
-            AuthenticationManagerBuilder authenticationManagerBuilder,
-            TokenProvider tokenProvider
-    ) {
+            AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.userRepository = userRepository;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
-        this.tokenProvider = tokenProvider;
-    }
-
-    @Transactional
-    public TokenDto login(LoginDto dto) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.createToken(authentication);
-        Long id = (userRepository.findByEmail(dto.getEmail()).orElseThrow(InvalidateUserException::new)).getId();
-        return new TokenDto(id, jwt);
     }
 
     public User signup(UserDto dto) {
@@ -77,20 +53,19 @@ public class UserService {
     }
 
     public User remove(Long id) {
-        Optional<User> userWrapper = userRepository.findById(id);
-        User user = userWrapper.get();
+        User user = findById(id);
         user.setStatus(false);
         return userRepository.save(user);
     }
 
     public User updateUsername(Long id, String username) {
-        User user = userRepository.getReferenceById(id);
+        User user = findById(id);
         user.setUsername(username);
         return userRepository.save(user);
     }
 
     public User updatePassword(Long id, String password) {
-        User user = userRepository.getReferenceById(id);
+        User user = findById(id);
         user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);
     }
@@ -101,8 +76,18 @@ public class UserService {
         return new MypageAccountResponseDto(entity);
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new InvalidateUserException());
+    }
+
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
+                .orElseThrow(() -> new InvalidateUserException());
+    }
+
+    public User findByUserName(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new InvalidateUserException());
     }
 }
